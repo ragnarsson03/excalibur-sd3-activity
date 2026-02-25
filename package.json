@@ -1,0 +1,29 @@
+{
+  "name": "excalibur-sd3-activity",
+  "version": "1.0.0",
+  "description": "Node + Express + MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ragnarsson03/excalibur-sd3-activity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ragnarsson03/excalibur-sd3-activity/issues"
+  },
+  "homepage": "https://github.com/ragnarsson03/excalibur-sd3-activity#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.2.2"
+  }
+}

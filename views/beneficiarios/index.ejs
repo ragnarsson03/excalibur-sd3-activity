@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-people-fill text-primary"></i> Lista de Beneficiarios</h2>
+        <a href="/beneficiarios/crear" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Nuevo
+            Beneficiario</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <% if (beneficiarios.length===0) { %>
+                <div class="alert alert-info text-center">
+                    Aún no hay beneficiarios registrados en el sistema. ¡Añade el primero!
+                </div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Cédula</th>
+                                    <th>Nombres</th>
+                                    <th>Teléfono</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% beneficiarios.forEach(b=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= b.cedula %>
+                                        </td>
+                                        <td>
+                                            <%= b.nombre %>
+                                                <%= b.apellido %>
+                                        </td>
+                                        <td>
+                                            <%= b.telefono %>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="/beneficiarios/editar/<%= b._id %>"
+                                                class="btn btn-sm btn-outline-warning" title="Editar">
+                                                <i class="bi bi-pencil-square"></i> Editar
+                                            </a>
+                                            <form action="/beneficiarios/eliminar/<%= b._id %>" method="POST"
+                                                class="d-inline"
+                                                onsubmit="return confirm('¿Seguro que deseas eliminar permanentemente a este beneficiario?');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    title="Eliminar">
+                                                    <i class="bi bi-trash3-fill"></i> Eliminar
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% } %>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

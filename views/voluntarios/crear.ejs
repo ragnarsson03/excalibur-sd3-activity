@@ -1,0 +1,65 @@
+<%- include('../partials/header') %>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0"><i class="bi bi-person-badge-fill"></i> Registrar Nuevo Voluntario</h4>
+        </div>
+        <div class="card-body">
+            <% if (typeof error !=='undefined' && error) { %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <form action="/voluntarios/crear" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Nombre</label>
+                                <input type="text" name="nombre" class="form-control" required placeholder="Ej: María"
+                                    value="<%= typeof datos !== 'undefined' ? datos.nombre : '' %>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Apellido</label>
+                                <input type="text" name="apellido" class="form-control" required placeholder="Ej: López"
+                                    value="<%= typeof datos !== 'undefined' ? datos.apellido : '' %>">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Cédula</label>
+                                <input type="text" name="cedula" class="form-control" required placeholder="V-12345678"
+                                    value="<%= typeof datos !== 'undefined' ? datos.cedula : '' %>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Teléfono</label>
+                                <input type="text" name="telefono" class="form-control" required
+                                    placeholder="0414-0000000"
+                                    value="<%= typeof datos !== 'undefined' ? datos.telefono : '' %>">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Profesión u Oficio</label>
+                            <input type="text" name="profesion" class="form-control" required
+                                placeholder="Ej: Médico, Maestro..."
+                                value="<%= typeof datos !== 'undefined' ? datos.profesion : '' %>">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Disponibilidad</label>
+                            <select name="disponibilidad" class="form-select">
+                                <% ['Fines de semana','Días hábiles','Tiempo completo','Por evento'].forEach(d=> { %>
+                                    <option value="<%= d %>" <%=(typeof datos !=='undefined' &&
+                                        datos.disponibilidad===d) ? 'selected' : '' %>><%= d %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="/voluntarios" class="btn btn-secondary">Cancelar y Volver</a>
+                            <button type="submit" class="btn btn-warning text-dark"><i
+                                    class="bi bi-cloud-arrow-up-fill"></i> Guardar Voluntario</button>
+                        </div>
+                    </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

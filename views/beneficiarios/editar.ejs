@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-warning text-dark border-warning">
+            <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Editar Beneficiario</h4>
+        </div>
+
+        <div class="card-body">
+            <form action="/beneficiarios/editar/<%= beneficiario._id %>" method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Nombre</label>
+                        <input type="text" name="nombre" class="form-control" required
+                            value="<%= beneficiario.nombre %>">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Apellido</label>
+                        <input type="text" name="apellido" class="form-control" required
+                            value="<%= beneficiario.apellido %>">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Cédula</label>
+                        <input type="text" name="cedula" class="form-control bg-light" required readonly
+                            value="<%= beneficiario.cedula %>" title="La cédula no puede modificarse una vez creada">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Fecha de Nacimiento</label>
+                        <!-- Formato YYYY-MM-DD necesario para campos type="date" -->
+                        <% const fecha=new Date(beneficiario.fechaNacimiento); const
+                            isoDate=fecha.toISOString().split('T')[0]; %>
+                            <input type="date" name="fechaNacimiento" class="form-control" required
+                                value="<%= isoDate %>">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Teléfono de Contacto</label>
+                    <input type="text" name="telefono" class="form-control" required
+                        value="<%= beneficiario.telefono %>">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Dirección Residencial</label>
+                    <textarea name="direccion" class="form-control" rows="3"
+                        required><%= beneficiario.direccion %></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="/beneficiarios" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-warning fw-bold"><i class="bi bi-save2-fill"></i> Actualizar
+                        Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
