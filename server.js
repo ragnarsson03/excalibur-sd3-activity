@@ -5,19 +5,18 @@ const connectDB = require('./config/database');
 
 // ── Initialize Express ──────────────────────────────────────────────────────
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// ── 1. Connect to MongoDB (uses config/database.js with validation) ─────────
+// ── 1. Connect to MongoDB ───────────────────────────────────────────────────
 connectDB();
 
-// ── 2. View Engine (EJS) ────────────────────────────────────────────────────
+// ── 2. View Engine (EJS) — path.join ensures cross-platform compatibility ───
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // ── 3. Middlewares ──────────────────────────────────────────────────────────
-app.use(express.urlencoded({ extended: true })); // Parse form data
-app.use(express.json());                          // Parse JSON body
-app.use(express.static(path.join(__dirname, 'public'))); // Static assets
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ── 4. Routes ───────────────────────────────────────────────────────────────
 app.use('/beneficiarios', require('./routes/beneficiary.routes'));
@@ -36,7 +35,14 @@ app.use((req, res) => {
   res.status(404).render('404');
 });
 
-// ── 7. Start Server ─────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at: http://localhost:${PORT}`);
-});
+// ── 7. Start Server (solo en local, NO en Vercel serverless) ─────────────────
+// Vercel importa este archivo como módulo; require.main === module es false allí.
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running at: http://localhost:${PORT}`);
+  });
+}
+
+// ── 8. Export app for Vercel serverless handler ──────────────────────────────
+module.exports = app;
