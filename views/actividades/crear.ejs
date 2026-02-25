@@ -1,0 +1,65 @@
+<%- include('../partials/header') %>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0"><i class="bi bi-plus-circle-fill"></i> Registrar Nueva Actividad</h4>
+        </div>
+        <div class="card-body">
+            <% if (typeof error !=='undefined' && error) { %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <form action="/actividades/crear" method="POST">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre de la Actividad</label>
+                            <input type="text" name="nombre" class="form-control" required
+                                placeholder="Ej: Taller de Salud"
+                                value="<%= typeof datos !== 'undefined' ? datos.nombre : '' %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción</label>
+                            <textarea name="descripcion" class="form-control" rows="3" required
+                                placeholder="Breve descripción de la actividad..."><%= typeof datos !== 'undefined' ? datos.descripcion : '' %></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Fecha</label>
+                                <input type="date" name="fecha" class="form-control" required
+                                    value="<%= typeof datos !== 'undefined' ? datos.fecha : '' %>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Área</label>
+                                <select name="area" class="form-select" required>
+                                    <option value="" disabled selected>Selecciona un área</option>
+                                    <% ['Salud','Educación','Cultura','Deporte','Social'].forEach(a=> { %>
+                                        <option value="<%= a %>" <%=(typeof datos !=='undefined' && datos.area===a)
+                                            ? 'selected' : '' %>>
+                                            <%= a %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Lugar</label>
+                            <input type="text" name="lugar" class="form-control" required
+                                placeholder="Ej: Sede principal"
+                                value="<%= typeof datos !== 'undefined' ? datos.lugar : '' %>">
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="/actividades" class="btn btn-secondary">Cancelar y Volver</a>
+                            <button type="submit" class="btn btn-success"><i class="bi bi-cloud-arrow-up-fill"></i>
+                                Guardar Actividad</button>
+                        </div>
+                    </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

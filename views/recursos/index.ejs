@@ -1,0 +1,65 @@
+<%- include('../partials/header') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-box-seam-fill text-danger"></i> Lista de Recursos</h2>
+        <a href="/recursos/crear" class="btn btn-danger"><i class="bi bi-plus-circle-fill"></i> Nuevo Recurso</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <% if (recursos.length===0) { %>
+                <div class="alert alert-info text-center">Aún no hay recursos registrados. ¡Añade el primero!</div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% recursos.forEach(r=> { %>
+                                    <tr>
+                                        <td><strong>
+                                                <%= r.nombre %>
+                                            </strong></td>
+                                        <td>
+                                            <%= r.tipo %>
+                                        </td>
+                                        <td><span class="fw-bold">
+                                                <%= r.cantidad %>
+                                            </span></td>
+                                        <td>
+                                            <% const badgeClass=r.estado==='Disponible' ? 'bg-success' :
+                                                r.estado==='Agotado' ? 'bg-danger' : 'bg-secondary' ; %>
+                                                <span class="badge <%= badgeClass %>">
+                                                    <%= r.estado %>
+                                                </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="/recursos/editar/<%= r._id %>"
+                                                class="btn btn-sm btn-outline-warning">
+                                                <i class="bi bi-pencil-square"></i> Editar
+                                            </a>
+                                            <form action="/recursos/eliminar/<%= r._id %>" method="POST"
+                                                class="d-inline"
+                                                onsubmit="return confirm('¿Eliminar este recurso permanentemente?');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-trash3-fill"></i> Eliminar
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% } %>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

@@ -1,0 +1,54 @@
+<%- include('../partials/header') %>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Editar Voluntario</h4>
+        </div>
+        <div class="card-body">
+            <form action="/voluntarios/editar/<%= voluntario._id %>" method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Nombre</label>
+                        <input type="text" name="nombre" class="form-control" required value="<%= voluntario.nombre %>">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Apellido</label>
+                        <input type="text" name="apellido" class="form-control" required
+                            value="<%= voluntario.apellido %>">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Cédula</label>
+                        <input type="text" name="cedula" class="form-control" required value="<%= voluntario.cedula %>">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Teléfono</label>
+                        <input type="text" name="telefono" class="form-control" required
+                            value="<%= voluntario.telefono %>">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Profesión u Oficio</label>
+                    <input type="text" name="profesion" class="form-control" required
+                        value="<%= voluntario.profesion %>">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Disponibilidad</label>
+                    <select name="disponibilidad" class="form-select">
+                        <% ['Fines de semana','Días hábiles','Tiempo completo','Por evento'].forEach(d=> { %>
+                            <option value="<%= d %>" <%=voluntario.disponibilidad===d ? 'selected' : '' %>><%= d %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="/voluntarios" class="btn btn-secondary">Cancelar y Volver</a>
+                    <button type="submit" class="btn btn-warning text-dark"><i class="bi bi-floppy-fill"></i> Actualizar
+                        Voluntario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

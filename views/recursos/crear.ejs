@@ -1,0 +1,59 @@
+<%- include('../partials/header') %>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 560px;">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0"><i class="bi bi-box-seam-fill"></i> Registrar Nuevo Recurso</h4>
+        </div>
+        <div class="card-body">
+            <% if (typeof error !=='undefined' && error) { %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <form action="/recursos/crear" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre del Recurso</label>
+                            <input type="text" name="nombre" class="form-control" required
+                                placeholder="Ej: Caja de Aspirinas"
+                                value="<%= typeof datos !== 'undefined' ? datos.nombre : '' %>">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Tipo</label>
+                                <select name="tipo" class="form-select" required>
+                                    <option value="" disabled selected>Selecciona un tipo</option>
+                                    <% ['Alimentos','Medicina','Material Educativo','Equipos','Otros'].forEach(t=> { %>
+                                        <option value="<%= t %>" <%=(typeof datos !=='undefined' && datos.tipo===t)
+                                            ? 'selected' : '' %>><%= t %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Cantidad</label>
+                                <input type="number" name="cantidad" class="form-control" required min="0"
+                                    placeholder="Ej: 100"
+                                    value="<%= typeof datos !== 'undefined' ? datos.cantidad : '' %>">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Estado</label>
+                            <select name="estado" class="form-select">
+                                <% ['Disponible','Agotado','En uso'].forEach(e=> { %>
+                                    <option value="<%= e %>" <%=(typeof datos !=='undefined' && datos.estado===e)
+                                        ? 'selected' : '' %>><%= e %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="/recursos" class="btn btn-secondary">Cancelar y Volver</a>
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-cloud-arrow-up-fill"></i>
+                                Guardar Recurso</button>
+                        </div>
+                    </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

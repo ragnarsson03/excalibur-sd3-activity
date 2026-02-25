@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="bi bi-clipboard2-plus-fill"></i> Registrar Nueva Asistencia</h4>
+        </div>
+        <div class="card-body">
+            <% if (typeof error !=='undefined' && error) { %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <form action="/asistencias/crear" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Beneficiario</label>
+                            <select name="beneficiario" class="form-select" required>
+                                <option value="" disabled selected>Selecciona un beneficiario</option>
+                                <% beneficiarios.forEach(b=> { %>
+                                    <option value="<%= b._id %>" <%=(typeof datos !=='undefined' &&
+                                        datos.beneficiario===String(b._id)) ? 'selected' : '' %>>
+                                        <%= b.apellido %>, <%= b.nombre %> — <%= b.cedula %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Actividad</label>
+                            <select name="actividad" class="form-select" required>
+                                <option value="" disabled selected>Selecciona una actividad</option>
+                                <% actividades.forEach(a=> { %>
+                                    <option value="<%= a._id %>" <%=(typeof datos !=='undefined' &&
+                                        datos.actividad===String(a._id)) ? 'selected' : '' %>>
+                                        <%= a.nombre %> (<%= new Date(a.fecha).toLocaleDateString('es-VE') %>)
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Fecha de Asistencia</label>
+                            <input type="date" name="fechaAsistencia" class="form-control"
+                                value="<%= new Date().toISOString().split('T')[0] %>">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Observación (opcional)</label>
+                            <textarea name="observacion" class="form-control" rows="2"
+                                placeholder="Sin observaciones"><%= typeof datos !== 'undefined' ? datos.observacion : '' %></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="/asistencias" class="btn btn-secondary">Cancelar y Volver</a>
+                            <button type="submit" class="btn btn-info text-white"><i
+                                    class="bi bi-cloud-arrow-up-fill"></i> Guardar Asistencia</button>
+                        </div>
+                    </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

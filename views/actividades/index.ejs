@@ -1,0 +1,68 @@
+<%- include('../partials/header') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-calendar-event-fill text-success"></i> Lista de Actividades</h2>
+        <div>
+            <a href="/actividades/consulta" class="btn btn-outline-secondary me-2"><i class="bi bi-funnel-fill"></i>
+                Filtrar por Área</a>
+            <a href="/actividades/crear" class="btn btn-success"><i class="bi bi-plus-circle-fill"></i> Nueva
+                Actividad</a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <% if (actividades.length===0) { %>
+                <div class="alert alert-info text-center">
+                    Aún no hay actividades registradas. ¡Añade la primera!
+                </div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Área</th>
+                                    <th>Fecha</th>
+                                    <th>Lugar</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% actividades.forEach(a=> { %>
+                                    <tr>
+                                        <td><strong>
+                                                <%= a.nombre %>
+                                            </strong></td>
+                                        <td><span class="badge bg-success">
+                                                <%= a.area %>
+                                            </span></td>
+                                        <td>
+                                            <%= new Date(a.fecha).toLocaleDateString('es-VE') %>
+                                        </td>
+                                        <td>
+                                            <%= a.lugar %>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="/actividades/editar/<%= a._id %>"
+                                                class="btn btn-sm btn-outline-warning">
+                                                <i class="bi bi-pencil-square"></i> Editar
+                                            </a>
+                                            <form action="/actividades/eliminar/<%= a._id %>" method="POST"
+                                                class="d-inline"
+                                                onsubmit="return confirm('¿Eliminar esta actividad permanentemente?');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-trash3-fill"></i> Eliminar
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% } %>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
