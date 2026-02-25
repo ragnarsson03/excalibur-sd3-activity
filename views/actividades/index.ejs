@@ -1,68 +1,106 @@
 <%- include('../partials/header') %>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-calendar-event-fill text-success"></i> Lista de Actividades</h2>
+    <div class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <div>
-            <a href="/actividades/consulta" class="btn btn-outline-secondary me-2"><i class="bi bi-funnel-fill"></i>
-                Filtrar por Área</a>
-            <a href="/actividades/crear" class="btn btn-success"><i class="bi bi-plus-circle-fill"></i> Nueva
-                Actividad</a>
+            <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
+                <i class="ph-fill ph-calendar-check text-blue-600 bg-blue-100 p-2 rounded-xl"></i>
+                Actividades
+            </h1>
+            <p class="text-slate-500 mt-1 ml-[3.25rem]">Eventos, talleres y jornadas programadas.</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="/actividades/consulta" class="btn btn-outline bg-white border-slate-200">
+                <i class="ph ph-magnifying-glass text-blue-600"></i> Explorar Áreas
+            </a>
+            <a href="/actividades/crear"
+                class="btn bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20">
+                <i class="ph ph-plus-circle"></i> Nueva Actividad
+            </a>
         </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <% if (actividades.length===0) { %>
-                <div class="alert alert-info text-center">
-                    Aún no hay actividades registradas. ¡Añade la primera!
-                </div>
-                <% } else { %>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Área</th>
-                                    <th>Fecha</th>
-                                    <th>Lugar</th>
-                                    <th class="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% actividades.forEach(a=> { %>
-                                    <tr>
-                                        <td><strong>
-                                                <%= a.nombre %>
-                                            </strong></td>
-                                        <td><span class="badge bg-success">
-                                                <%= a.area %>
-                                            </span></td>
-                                        <td>
-                                            <%= new Date(a.fecha).toLocaleDateString('es-VE') %>
-                                        </td>
-                                        <td>
-                                            <%= a.lugar %>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="/actividades/editar/<%= a._id %>"
-                                                class="btn btn-sm btn-outline-warning">
-                                                <i class="bi bi-pencil-square"></i> Editar
-                                            </a>
-                                            <form action="/actividades/eliminar/<%= a._id %>" method="POST"
-                                                class="d-inline"
-                                                onsubmit="return confirm('¿Eliminar esta actividad permanentemente?');">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash3-fill"></i> Eliminar
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <% if (actividades.length===0) { %>
+            <div
+                class="col-span-full card p-12 text-center bg-slate-50/50 shadow-none border border-dashed border-slate-300">
+                <i class="ph-fill ph-calendar-blank text-5xl text-slate-300 mb-4 inline-block"></i>
+                <h3 class="text-lg font-bold text-slate-800">No hay actividades registradas</h3>
+                <p class="text-slate-500 mb-4">Empieza a planificar tu primer evento o jornada.</p>
+                <a href="/actividades/crear" class="btn bg-blue-600 text-white">Crear la primera</a>
+            </div>
+            <% } else { %>
+                <% actividades.forEach(act=> { %>
+                    <div
+                        class="card relative flex flex-col transition-all duration-300 hover:shadow-card hover:-translate-y-1 hover:border-blue-100 border border-slate-100 overflow-hidden group">
+
+                        <% let badgeClass='bg-slate-100 text-slate-800' ; let iconClass='ph-calendar' ; switch(act.area)
+                            { case 'Salud' : badgeClass='bg-rose-100 text-rose-700 border border-rose-200' ;
+                            iconClass='ph-heartbeat' ; break; case 'Educación' :
+                            badgeClass='bg-amber-100 text-amber-700 border border-amber-200' ; iconClass='ph-books' ;
+                            break; case 'Cultura' :
+                            badgeClass='bg-fuchsia-100 text-fuchsia-700 border border-fuchsia-200' ;
+                            iconClass='ph-palette' ; break; case 'Deporte' :
+                            badgeClass='bg-emerald-100 text-emerald-700 border border-emerald-200' ;
+                            iconClass='ph-person-simple-run' ; break; case 'Social' :
+                            badgeClass='bg-brand/10 text-brand border border-brand/20' ; iconClass='ph-users-three' ;
+                            break; } %>
+
+                            <div class="p-6 flex-grow flex flex-col items-start h-full pb-8">
+                                <div class="flex justify-between items-start w-full mb-4">
+                                    <span class="badge px-3 py-1 flex items-center gap-1.5 <%= badgeClass %>"><i
+                                            class="<%= iconClass %>"></i>
+                                        <%= act.area %>
+                                    </span>
+                                    <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <a href="/actividades/editar/<%= act._id %>"
+                                            class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                            title="Editar">
+                                            <i class="ph-fill ph-pencil-simple text-lg"></i>
+                                        </a>
+                                        <form action="/actividades/eliminar/<%= act._id %>" method="POST" class="inline"
+                                            onsubmit="return confirm('¿Seguro de que deseas eliminar esta actividad?');">
+                                            <button type="submit"
+                                                class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                                title="Eliminar">
+                                                <i class="ph-fill ph-trash text-lg"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight">
+                                    <%= act.nombre %>
+                                </h3>
+                                <p class="text-slate-600 text-sm mb-6 flex-grow line-clamp-3">
+                                    <%= act.descripcion %>
+                                </p>
+
+                                <div class="space-y-3 w-full border-t border-slate-100 pt-5 mt-auto">
+                                    <div class="flex items-center text-sm font-medium text-slate-700">
+                                        <div class="w-8 flex justify-center text-brand text-lg"><i
+                                                class="ph-fill ph-calendar-dots"></i></div>
+                                        <%= new Date(act.fecha).toLocaleDateString(undefined, { weekday: 'long' ,
+                                            year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+                                    </div>
+                                    <div class="flex items-start text-sm font-medium text-slate-700">
+                                        <div class="w-8 flex justify-center text-sky-500 text-lg mt-0.5"><i
+                                                class="ph-fill ph-map-pin"></i></div>
+                                        <span class="flex-1">
+                                            <%= act.lugar %>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Progess line decorative -->
+                            <div class="h-1.5 w-full bg-slate-100 absolute bottom-0">
+                                <div
+                                    class="h-full bg-blue-500 w-full transform origin-left md:scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out">
+                                </div>
+                            </div>
                     </div>
-                    <% } %>
-        </div>
+                    <% }) %>
+                        <% } %>
     </div>
 
     <%- include('../partials/footer') %>

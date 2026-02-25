@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Font: Inter ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── Design tokens ──────────────────────────────────────────────────────── */
+:root {
+    --brand: #ff5722;
+    --brand-dark: #e64a19;
+    --brand-light: #ff8a65;
+    --surface: #f4f6f8;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────── */
+@layer base {
+    body {
+        @apply font-sans bg-[#f4f6f8] text-slate-800 antialiased;
+    }
+    h1, h2, h3 {
+        @apply font-bold;
+    }
+}
+
+/* ── Components ─────────────────────────────────────────────────────────── */
+@layer components {
+
+    /* Navbar */
+    .navbar {
+        @apply bg-slate-900 shadow-lg sticky top-0 z-50;
+    }
+    .navbar-brand {
+        @apply text-[#ff5722] font-extrabold text-xl tracking-tight;
+    }
+    .nav-link {
+        @apply text-slate-300 hover:text-[#ff5722] transition-colors duration-200 px-3 py-2 rounded-lg text-sm font-medium;
+    }
+    .nav-link.active {
+        @apply text-[#ff5722] bg-slate-800;
+    }
+
+    /* Cards */
+    .card {
+        @apply bg-white rounded-2xl shadow-card border-0 overflow-hidden;
+    }
+    .card-header {
+        @apply bg-slate-800 text-white px-6 py-4 font-semibold text-lg flex items-center gap-2;
+    }
+
+    /* Module cards on home page */
+    .module-card {
+        @apply bg-white rounded-2xl shadow-soft p-6 text-center cursor-pointer
+               transition-all duration-200 hover:-translate-y-1 hover:shadow-card
+               border border-slate-100 no-underline block;
+    }
+
+    /* Buttons */
+    .btn {
+        @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium
+               transition-all duration-150 text-sm cursor-pointer;
+    }
+    .btn-primary {
+        @apply bg-[#ff5722] hover:bg-[#e64a19] text-white shadow-sm;
+    }
+    .btn-secondary {
+        @apply bg-slate-700 hover:bg-slate-600 text-white shadow-sm;
+    }
+    .btn-danger {
+        @apply bg-red-600 hover:bg-red-700 text-white shadow-sm;
+    }
+    .btn-outline {
+        @apply border border-slate-300 hover:bg-slate-100 text-slate-700;
+    }
+
+    /* Tables */
+    .data-table {
+        @apply w-full divide-y divide-slate-200 text-sm;
+    }
+    .data-table thead {
+        @apply bg-slate-800 text-white;
+    }
+    .data-table th {
+        @apply px-4 py-3 text-left font-semibold uppercase tracking-wide text-xs;
+    }
+    .data-table td {
+        @apply px-4 py-3 text-slate-700;
+    }
+    .data-table tbody tr {
+        @apply even:bg-slate-50 hover:bg-orange-50 transition-colors duration-100;
+    }
+
+    /* Forms */
+    .form-label {
+        @apply block text-sm font-medium text-slate-700 mb-1;
+    }
+    .form-input {
+        @apply w-full border border-slate-300 rounded-lg px-3 py-2
+               focus:outline-none focus:ring-2 focus:ring-[#ff5722] focus:border-transparent
+               transition text-sm bg-white;
+    }
+    .form-select {
+        @apply form-input appearance-none;
+    }
+    .form-error {
+        @apply bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm mb-4;
+    }
+
+    /* Badges */
+    .badge {
+        @apply inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold;
+    }
+    .badge-green { @apply bg-green-100 text-green-800; }
+    .badge-yellow { @apply bg-yellow-100 text-yellow-800; }
+    .badge-red { @apply bg-red-100 text-red-800; }
+    .badge-blue { @apply bg-blue-100 text-blue-800; }
+    .badge-purple { @apply bg-purple-100 text-purple-800; }
+    .badge-orange { @apply bg-orange-100 text-orange-800; }
+}

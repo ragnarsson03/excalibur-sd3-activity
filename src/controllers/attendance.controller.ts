@@ -1,9 +1,10 @@
-const Attendance = require('../models/Attendance');
-const Beneficiary = require('../models/Beneficiary');
-const Activity = require('../models/Activity');
+import { Request, Response } from 'express';
+import Attendance from '../models/Attendance';
+import Beneficiary from '../models/Beneficiary';
+import Activity from '../models/Activity';
 
 // READ - Get all attendance records
-exports.getAll = async (req, res) => {
+export const getAll = async (_req: Request, res: Response): Promise<void> => {
     try {
         const records = await Attendance.find()
             .populate('beneficiario', 'nombre apellido cedula')
@@ -17,7 +18,7 @@ exports.getAll = async (req, res) => {
 };
 
 // CREATE - Show create form (with dropdowns)
-exports.showCreateForm = async (req, res) => {
+export const showCreateForm = async (_req: Request, res: Response): Promise<void> => {
     try {
         const [beneficiaries, activities] = await Promise.all([
             Beneficiary.find().sort({ apellido: 1 }),
@@ -36,7 +37,7 @@ exports.showCreateForm = async (req, res) => {
 };
 
 // CREATE - Process new attendance record
-exports.create = async (req, res) => {
+export const create = async (req: Request, res: Response): Promise<void> => {
     try {
         const { beneficiario, actividad, fechaAsistencia, observacion } = req.body;
         await Attendance.create({ beneficiario, actividad, fechaAsistencia, observacion });
@@ -57,14 +58,14 @@ exports.create = async (req, res) => {
 };
 
 // UPDATE - Show edit form
-exports.showEditForm = async (req, res) => {
+export const showEditForm = async (req: Request, res: Response): Promise<void> => {
     try {
         const [record, beneficiaries, activities] = await Promise.all([
             Attendance.findById(req.params.id),
             Beneficiary.find().sort({ apellido: 1 }),
             Activity.find().sort({ nombre: 1 })
         ]);
-        if (!record) return res.status(404).render('404');
+        if (!record) { res.status(404).render('404'); return; }
         res.render('asistencias/editar', {
             asistencia: record,
             beneficiarios: beneficiaries,
@@ -77,10 +78,11 @@ exports.showEditForm = async (req, res) => {
 };
 
 // UPDATE - Process update
-exports.update = async (req, res) => {
+export const update = async (req: Request, res: Response): Promise<void> => {
     try {
         const { beneficiario, actividad, fechaAsistencia, observacion } = req.body;
-        await Attendance.findByIdAndUpdate(req.params.id,
+        await Attendance.findByIdAndUpdate(
+            req.params.id,
             { beneficiario, actividad, fechaAsistencia, observacion },
             { new: true, runValidators: true }
         );
@@ -92,7 +94,7 @@ exports.update = async (req, res) => {
 };
 
 // DELETE - Remove attendance record
-exports.remove = async (req, res) => {
+export const remove = async (req: Request, res: Response): Promise<void> => {
     try {
         await Attendance.findByIdAndDelete(req.params.id);
         res.redirect('/asistencias');

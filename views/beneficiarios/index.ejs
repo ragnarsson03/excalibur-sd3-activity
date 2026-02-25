@@ -1,61 +1,89 @@
 <%- include('../partials/header') %>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-people-fill text-primary"></i> Lista de Beneficiarios</h2>
-        <a href="/beneficiarios/crear" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Nuevo
-            Beneficiario</a>
+    <div class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
+                <i class="ph-fill ph-users text-purple-600 bg-purple-100 p-2 rounded-xl"></i>
+                Beneficiarios
+            </h1>
+            <p class="text-slate-500 mt-1 ml-[3.25rem]">Listado general de personas registradas.</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="/beneficiarios/consulta" class="btn btn-outline bg-white border-slate-200">
+                <i class="ph ph-magnifying-glass"></i> Consultar
+            </a>
+            <a href="/beneficiarios/crear" class="btn btn-primary shadow-lg shadow-brand/20">
+                <i class="ph ph-plus-circle"></i> Nuevo Beneficiario
+            </a>
+        </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <% if (beneficiarios.length===0) { %>
-                <div class="alert alert-info text-center">
-                    Aún no hay beneficiarios registrados en el sistema. ¡Añade el primero!
-                </div>
-                <% } else { %>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Cédula</th>
-                                    <th>Nombres</th>
-                                    <th>Teléfono</th>
-                                    <th class="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% beneficiarios.forEach(b=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= b.cedula %>
-                                        </td>
-                                        <td>
-                                            <%= b.nombre %>
-                                                <%= b.apellido %>
-                                        </td>
-                                        <td>
-                                            <%= b.telefono %>
-                                        </td>
-                                        <td class="text-center">
+    <div class="card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Cédula</th>
+                        <th scope="col">Nombre Completo</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Fecha Registro</th>
+                        <th scope="col" class="text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (beneficiarios.length===0) { %>
+                        <tr>
+                            <td colspan="5" class="py-12 text-center text-slate-500 bg-slate-50/50">
+                                <div class="flex flex-col items-center justify-center gap-3">
+                                    <i class="ph-fill ph-users-three text-5xl text-slate-300"></i>
+                                    <span class="text-sm font-medium">No hay beneficiarios registrados en la base de
+                                        datos.</span>
+                                    <a href="/beneficiarios/crear"
+                                        class="text-brand text-sm hover:underline font-semibold mt-2">Agregar el
+                                        primero</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <% } else { %>
+                            <% beneficiarios.forEach(b=> { %>
+                                <tr class="group">
+                                    <td class="whitespace-nowrap font-medium text-slate-900">
+                                        <%= b.cedula %>
+                                    </td>
+                                    <td class="whitespace-nowrap">
+                                        <%= b.nombre %>
+                                            <%= b.apellido %>
+                                    </td>
+                                    <td class="whitespace-nowrap">
+                                        <%= b.telefono %>
+                                    </td>
+                                    <td class="whitespace-nowrap text-slate-500">
+                                        <%= new Date(b.createdAt).toLocaleDateString() %>
+                                    </td>
+                                    <td class="whitespace-nowrap text-right">
+                                        <div
+                                            class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <a href="/beneficiarios/editar/<%= b._id %>"
-                                                class="btn btn-sm btn-outline-warning" title="Editar">
-                                                <i class="bi bi-pencil-square"></i> Editar
+                                                class="btn bg-blue-50 text-blue-600 hover:bg-blue-100 !p-2 rounded-lg"
+                                                title="Editar">
+                                                <i class="ph ph-pencil-simple leading-none text-lg"></i>
                                             </a>
                                             <form action="/beneficiarios/eliminar/<%= b._id %>" method="POST"
-                                                class="d-inline"
-                                                onsubmit="return confirm('¿Seguro que deseas eliminar permanentemente a este beneficiario?');">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                class="inline"
+                                                onsubmit="return confirm('¿Estás seguro de que deseas eliminar este beneficiario?');">
+                                                <button type="submit"
+                                                    class="btn bg-red-50 text-red-600 hover:bg-red-100 !p-2 rounded-lg cursor-pointer"
                                                     title="Eliminar">
-                                                    <i class="bi bi-trash3-fill"></i> Eliminar
+                                                    <i class="ph ph-trash leading-none text-lg"></i>
                                                 </button>
                                             </form>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-                    <% } %>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                    <% } %>
+                </tbody>
+            </table>
         </div>
     </div>
 

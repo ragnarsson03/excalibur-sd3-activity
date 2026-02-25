@@ -1,29 +1,27 @@
 {
   "name": "excalibur-sd3-activity",
   "version": "1.0.0",
-  "description": "Node + Express + MongoDB",
-  "main": "server.js",
+  "description": "Node + Express + MongoDB en TypeScript",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/server.js",
+    "dev": "concurrently \"npx tailwindcss -i ./public/css/tailwind.src.css -o ./public/css/tailwind.css --watch\" \"nodemon --exec ts-node src/server.ts\"",
+    "build": "npx tailwindcss -i ./public/css/tailwind.src.css -o ./public/css/tailwind.css --minify && tsc",
+    "vercel-build": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ragnarsson03/excalibur-sd3-activity.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/ragnarsson03/excalibur-sd3-activity/issues"
-  },
-  "homepage": "https://github.com/ragnarsson03/excalibur-sd3-activity#readme",
   "dependencies": {
     "dotenv": "^17.3.1",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "mongoose": "^9.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.0",
+    "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }

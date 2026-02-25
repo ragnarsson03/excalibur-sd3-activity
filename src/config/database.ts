@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // ── Cache de conexión para entornos serverless (Vercel) ─────────────────────
 // En serverless, cada invocación puede reutilizar el mismo proceso.
@@ -11,7 +11,7 @@ let isConnected = false;
  * - En entornos serverless, reutiliza la conexión existente si ya está activa.
  * - Termina el proceso con código 1 si la conexión falla (solo en entorno local).
  */
-const connectDB = async () => {
+const connectDB = async (): Promise<void> => {
     // ── Reutilizar conexión existente (optimización serverless) ────────────
     if (isConnected) {
         console.log('♻️  Reusing existing MongoDB connection');
@@ -23,7 +23,7 @@ const connectDB = async () => {
     // ── Validación temprana: falla descriptiva si falta la variable ────────
     if (!uri) {
         const msg =
-            '❌ [config/database.js] MONGODB_URI is not defined.\n' +
+            '❌ [src/config/database.ts] MONGODB_URI is not defined.\n' +
             '   • Local:   Add MONGODB_URI to your .env file\n' +
             '   • Vercel:  Add MONGODB_URI in Project → Settings → Environment Variables';
         throw new Error(msg);
@@ -37,7 +37,8 @@ const connectDB = async () => {
         isConnected = true;
         console.log(`✅ MongoDB connected: ${conn.connection.host}`);
     } catch (error) {
-        console.error('❌ MongoDB connection error:', error.message);
+        const err = error as Error;
+        console.error('❌ MongoDB connection error:', err.message);
 
         // En producción serverless lanzamos el error (no usamos process.exit).
         // En local sí terminamos el proceso para avisar al desarrollador.
@@ -48,4 +49,4 @@ const connectDB = async () => {
     }
 };
 
-module.exports = connectDB;
+export default connectDB;

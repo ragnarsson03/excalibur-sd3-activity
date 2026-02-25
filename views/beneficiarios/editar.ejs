@@ -1,59 +1,73 @@
 <%- include('../partials/header') %>
 
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
-        <div class="card-header bg-warning text-dark border-warning">
-            <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Editar Beneficiario</h4>
+    <div class="max-w-2xl mx-auto">
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <a href="/beneficiarios"
+                    class="text-slate-500 hover:text-brand flex items-center gap-2 mb-2 text-sm font-medium w-fit">
+                    <i class="ph ph-arrow-left"></i> Volver al listado
+                </a>
+                <h1 class="text-3xl font-extrabold text-slate-900">
+                    Editar Beneficiario
+                </h1>
+            </div>
+            <div class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold border border-indigo-100">
+                ID: <%= beneficiario._id.toString().slice(-6) %>
+            </div>
         </div>
 
-        <div class="card-body">
-            <form action="/beneficiarios/editar/<%= beneficiario._id %>" method="POST">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Nombre</label>
-                        <input type="text" name="nombre" class="form-control" required
+        <div class="card p-8 border border-slate-100 shadow-card">
+            <form action="/beneficiarios/editar/<%= beneficiario._id %>" method="POST" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="form-label" for="nombre">Nombres <span class="text-red-500">*</span></label>
+                        <input type="text" id="nombre" name="nombre" class="form-input focus:ring-indigo-500" required
                             value="<%= beneficiario.nombre %>">
                     </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Apellido</label>
-                        <input type="text" name="apellido" class="form-control" required
-                            value="<%= beneficiario.apellido %>">
+                    <div>
+                        <label class="form-label" for="apellido">Apellidos <span class="text-red-500">*</span></label>
+                        <input type="text" id="apellido" name="apellido" class="form-input focus:ring-indigo-500"
+                            required value="<%= beneficiario.apellido %>">
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Cédula</label>
-                        <input type="text" name="cedula" class="form-control bg-light" required readonly
-                            value="<%= beneficiario.cedula %>" title="La cédula no puede modificarse una vez creada">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="form-label" for="cedula">Cédula de Identidad <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="cedula" name="cedula" class="form-input focus:ring-indigo-500" required
+                            value="<%= beneficiario.cedula %>">
                     </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Fecha de Nacimiento</label>
-                        <!-- Formato YYYY-MM-DD necesario para campos type="date" -->
-                        <% const fecha=new Date(beneficiario.fechaNacimiento); const
-                            isoDate=fecha.toISOString().split('T')[0]; %>
-                            <input type="date" name="fechaNacimiento" class="form-control" required
-                                value="<%= isoDate %>">
+                    <div>
+                        <label class="form-label" for="telefono">Teléfono <span class="text-red-500">*</span></label>
+                        <input type="tel" id="telefono" name="telefono" class="form-input focus:ring-indigo-500"
+                            required value="<%= beneficiario.telefono %>">
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Teléfono de Contacto</label>
-                    <input type="text" name="telefono" class="form-control" required
-                        value="<%= beneficiario.telefono %>">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="form-label" for="fechaNacimiento">Fecha de Nacimiento <span
+                                class="text-red-500">*</span></label>
+                        <% const isoDate=new Date(beneficiario.fechaNacimiento).toISOString().split('T')[0]; %>
+                            <input type="date" id="fechaNacimiento" name="fechaNacimiento"
+                                class="form-input focus:ring-indigo-500" required value="<%= isoDate %>">
+                    </div>
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Dirección Residencial</label>
-                    <textarea name="direccion" class="form-control" rows="3"
+                <div>
+                    <label class="form-label" for="direccion">Dirección de Domicilio <span
+                            class="text-red-500">*</span></label>
+                    <textarea id="direccion" name="direccion" rows="3"
+                        class="form-input resize-none focus:ring-indigo-500"
                         required><%= beneficiario.direccion %></textarea>
                 </div>
 
-                <div class="d-flex justify-content-between">
-                    <a href="/beneficiarios" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-warning fw-bold"><i class="bi bi-save2-fill"></i> Actualizar
-                        Cambios</button>
+                <div class="pt-6 border-t border-slate-100 flex justify-end gap-3">
+                    <a href="/beneficiarios" class="btn btn-outline">Cancelar</a>
+                    <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-8">
+                        Guardar Cambios
+                    </button>
                 </div>
             </form>
         </div>

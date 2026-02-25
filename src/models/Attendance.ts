@@ -1,13 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose, { Schema } from 'mongoose';
+import { IAttendance } from '../interfaces/IAttendance';
 
-const AttendanceSchema = new mongoose.Schema({
+const AttendanceSchema: Schema = new Schema<IAttendance>({
     beneficiario: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Beneficiary',
         required: [true, 'El beneficiario es obligatorio']
     },
     actividad: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Activity',
         required: [true, 'La actividad es obligatoria']
     },
@@ -22,4 +23,4 @@ const AttendanceSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Attendance', AttendanceSchema);
+export default mongoose.model<IAttendance>('Attendance', AttendanceSchema);

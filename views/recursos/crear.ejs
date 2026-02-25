@@ -1,56 +1,125 @@
 <%- include('../partials/header') %>
 
-    <div class="card shadow-sm mx-auto" style="max-width: 560px;">
-        <div class="card-header bg-danger text-white">
-            <h4 class="mb-0"><i class="bi bi-box-seam-fill"></i> Registrar Nuevo Recurso</h4>
+    <div class="max-w-2xl mx-auto">
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <a href="/recursos"
+                    class="text-slate-500 hover:text-emerald-600 flex items-center gap-2 mb-2 text-sm font-medium w-fit transition-colors">
+                    <i class="ph ph-arrow-left"></i> Ver Inventario
+                </a>
+                <h1 class="text-3xl font-extrabold text-slate-900">
+                    Registrar Recurso
+                </h1>
+            </div>
         </div>
-        <div class="card-body">
-            <% if (typeof error !=='undefined' && error) { %>
-                <div class="alert alert-danger">
-                    <%= error %>
+
+        <div class="card p-8 border border-slate-100 shadow-card">
+            <% if (error) { %>
+                <div class="form-error bg-red-50 text-red-700 border-l-4 border-red-500 p-4 rounded-r-lg mb-6">
+                    <div class="flex gap-2 isolate font-medium items-center">
+                        <i class="ph-fill ph-warning-circle text-xl text-red-500"></i>
+                        <%= error %>
+                    </div>
                 </div>
                 <% } %>
 
-                    <form action="/recursos/crear" method="POST">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Nombre del Recurso</label>
-                            <input type="text" name="nombre" class="form-control" required
-                                placeholder="Ej: Caja de Aspirinas"
-                                value="<%= typeof datos !== 'undefined' ? datos.nombre : '' %>">
+                    <form action="/recursos/crear" method="POST" class="space-y-6">
+                        <div>
+                            <label class="form-label" for="nombre">Nombre del Insumo / Material <span
+                                    class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="ph-fill ph-tag text-slate-400"></i>
+                                </div>
+                                <input type="text" id="nombre" name="nombre"
+                                    class="form-input pl-10 focus:ring-emerald-500" required autofocus
+                                    value="<%= datos.nombre || '' %>"
+                                    placeholder="Ej. Lote de Paracetamol 500mg, Resmas de papel...">
+                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Tipo</label>
-                                <select name="tipo" class="form-select" required>
-                                    <option value="" disabled selected>Selecciona un tipo</option>
-                                    <% ['Alimentos','Medicina','Material Educativo','Equipos','Otros'].forEach(t=> { %>
-                                        <option value="<%= t %>" <%=(typeof datos !=='undefined' && datos.tipo===t)
-                                            ? 'selected' : '' %>><%= t %>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="form-label" for="tipo">Categoría de Recurso <span
+                                        class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <select id="tipo" name="tipo" class="form-select focus:ring-emerald-500 pr-10"
+                                        required>
+                                        <option value="">Selecciona tipo...</option>
+                                        <option value="Alimentos" <%=datos.tipo==='Alimentos' ? 'selected' : '' %>
+                                            >Alimentos</option>
+                                        <option value="Medicina" <%=datos.tipo==='Medicina' ? 'selected' : '' %>
+                                            >Medicina</option>
+                                        <option value="Material Educativo" <%=datos.tipo==='Material Educativo'
+                                            ? 'selected' : '' %>>Material Educativo</option>
+                                        <option value="Equipos" <%=datos.tipo==='Equipos' ? 'selected' : '' %>>Equipos
                                         </option>
-                                        <% }) %>
-                                </select>
+                                        <option value="Otros" <%=datos.tipo==='Otros' ? 'selected' : '' %>>Otros
+                                        </option>
+                                    </select>
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                                        <i class="ph-bold ph-caret-down"></i>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Cantidad</label>
-                                <input type="number" name="cantidad" class="form-control" required min="0"
-                                    placeholder="Ej: 100"
-                                    value="<%= typeof datos !== 'undefined' ? datos.cantidad : '' %>">
+                            <div>
+                                <label class="form-label" for="cantidad">Cantidad / Unidades <span
+                                        class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="ph-fill ph-hash text-slate-400"></i>
+                                    </div>
+                                    <input type="number" id="cantidad" name="cantidad" min="0"
+                                        class="form-input pl-10 focus:ring-emerald-500" required
+                                        value="<%= datos.cantidad || '1' %>">
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Estado</label>
-                            <select name="estado" class="form-select">
-                                <% ['Disponible','Agotado','En uso'].forEach(e=> { %>
-                                    <option value="<%= e %>" <%=(typeof datos !=='undefined' && datos.estado===e)
-                                        ? 'selected' : '' %>><%= e %>
-                                    </option>
-                                    <% }) %>
-                            </select>
+
+                        <div>
+                            <label class="form-label" for="estado">Estado Actual <span
+                                    class="text-red-500">*</span></label>
+
+                            <div class="grid grid-cols-3 gap-4 mt-2">
+                                <label class="cursor-pointer relative">
+                                    <input type="radio" name="estado" value="Disponible" class="peer sr-only" required
+                                        <%=(!datos.estado || datos.estado==='Disponible' ) ? 'checked' : '' %>>
+                                    <div
+                                        class="p-4 rounded-xl border-2 border-slate-100 bg-white hover:bg-slate-50 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition-all text-center">
+                                        <i class="ph-fill ph-check-circle text-emerald-500 text-2xl mb-1"></i>
+                                        <div class="font-semibold text-slate-700 text-sm">Disponible</div>
+                                    </div>
+                                </label>
+
+                                <label class="cursor-pointer relative">
+                                    <input type="radio" name="estado" value="En uso" class="peer sr-only" required
+                                        <%=datos.estado==='En uso' ? 'checked' : '' %>>
+                                    <div
+                                        class="p-4 rounded-xl border-2 border-slate-100 bg-white hover:bg-slate-50 peer-checked:border-blue-500 peer-checked:bg-blue-50 transition-all text-center">
+                                        <i class="ph-fill ph-spinner-gap text-blue-500 text-2xl mb-1"></i>
+                                        <div class="font-semibold text-slate-700 text-sm">En uso</div>
+                                    </div>
+                                </label>
+
+                                <label class="cursor-pointer relative">
+                                    <input type="radio" name="estado" value="Agotado" class="peer sr-only" required
+                                        <%=datos.estado==='Agotado' ? 'checked' : '' %>>
+                                    <div
+                                        class="p-4 rounded-xl border-2 border-slate-100 bg-white hover:bg-slate-50 peer-checked:border-red-500 peer-checked:bg-red-50 transition-all text-center">
+                                        <i class="ph-fill ph-x-circle text-red-500 text-2xl mb-1"></i>
+                                        <div class="font-semibold text-slate-700 text-sm">Agotado</div>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <a href="/recursos" class="btn btn-secondary">Cancelar y Volver</a>
-                            <button type="submit" class="btn btn-danger"><i class="bi bi-cloud-arrow-up-fill"></i>
-                                Guardar Recurso</button>
+
+                        <div class="pt-6 border-t border-slate-100 flex justify-end gap-3 mt-8">
+                            <a href="/recursos" class="btn btn-outline border-slate-300">Cancelar</a>
+                            <button type="submit"
+                                class="btn bg-emerald-600 hover:bg-emerald-700 text-white px-8 shadow-md">
+                                Guardar Recurso
+                            </button>
                         </div>
                     </form>
         </div>

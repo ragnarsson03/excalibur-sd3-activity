@@ -1,7 +1,8 @@
-const Beneficiary = require('../models/Beneficiary');
+import { Request, Response } from 'express';
+import Beneficiary from '../models/Beneficiary';
 
 // READ - Get all beneficiaries
-exports.getAll = async (req, res) => {
+export const getAll = async (req: Request, res: Response): Promise<void> => {
     try {
         const beneficiaries = await Beneficiary.find().sort({ createdAt: -1 });
         res.render('beneficiarios/index', { beneficiarios: beneficiaries });
@@ -12,12 +13,12 @@ exports.getAll = async (req, res) => {
 };
 
 // CREATE - Show create form
-exports.showCreateForm = (req, res) => {
+export const showCreateForm = (_req: Request, res: Response): void => {
     res.render('beneficiarios/crear', { error: null, datos: {} });
 };
 
 // CREATE - Process new beneficiary
-exports.create = async (req, res) => {
+export const create = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, apellido, cedula, fechaNacimiento, direccion, telefono } = req.body;
         await Beneficiary.create({ nombre, apellido, cedula, fechaNacimiento, direccion, telefono });
@@ -32,10 +33,10 @@ exports.create = async (req, res) => {
 };
 
 // UPDATE - Show edit form
-exports.showEditForm = async (req, res) => {
+export const showEditForm = async (req: Request, res: Response): Promise<void> => {
     try {
         const beneficiary = await Beneficiary.findById(req.params.id);
-        if (!beneficiary) return res.status(404).render('404');
+        if (!beneficiary) { res.status(404).render('404'); return; }
         res.render('beneficiarios/editar', { beneficiario: beneficiary });
     } catch (error) {
         console.error('Error fetching beneficiary for edit:', error);
@@ -44,10 +45,11 @@ exports.showEditForm = async (req, res) => {
 };
 
 // UPDATE - Process update
-exports.update = async (req, res) => {
+export const update = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, apellido, cedula, fechaNacimiento, direccion, telefono } = req.body;
-        await Beneficiary.findByIdAndUpdate(req.params.id,
+        await Beneficiary.findByIdAndUpdate(
+            req.params.id,
             { nombre, apellido, cedula, fechaNacimiento, direccion, telefono },
             { new: true, runValidators: true }
         );
@@ -59,7 +61,7 @@ exports.update = async (req, res) => {
 };
 
 // DELETE - Remove beneficiary
-exports.remove = async (req, res) => {
+export const remove = async (req: Request, res: Response): Promise<void> => {
     try {
         await Beneficiary.findByIdAndDelete(req.params.id);
         res.redirect('/beneficiarios');
@@ -70,9 +72,9 @@ exports.remove = async (req, res) => {
 };
 
 // QUERY - Search beneficiaries by cedula or name
-exports.search = async (req, res) => {
+export const search = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { q } = req.query;
+        const { q } = req.query as { q?: string };
         const query = q
             ? {
                 $or: [

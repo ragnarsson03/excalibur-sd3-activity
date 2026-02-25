@@ -1,6 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const ctrl = require('../controllers/resource.controller');
+import { Router } from 'express';
+import * as ctrl from '../controllers/beneficiary.controller';
+
+const router = Router();
 
 // READ   - List all
 router.get('/', ctrl.getAll);
@@ -18,4 +19,7 @@ router.post('/editar/:id', ctrl.update);
 // DELETE - Remove record
 router.post('/eliminar/:id', ctrl.remove);
 
-module.exports = router;
+// QUERY  - Custom search
+router.get('/consulta', ctrl.search);
+
+export default router;
