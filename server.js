@@ -18,7 +18,25 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ── 4. Routes ───────────────────────────────────────────────────────────────
+// ── 4. Ruta de Diagnóstico — GRUPO EXCALIBUR ────────────────────────────────
+app.get('/debug-db', async (req, res) => {
+  const mongoose = require('mongoose');
+  const estado = mongoose.connection.readyState;
+  const estados = {
+    0: 'Desconectado',
+    1: 'Conectado',
+    2: 'Conectando',
+    3: 'Desconectando'
+  };
+
+  res.json({
+    estado_conexion: estados[estado],
+    uri_detectada: process.env.MONGODB_URI ? 'SÍ (configurada)' : 'NO (está undefined)',
+    mensaje: "Si sale 'Conectando' y se queda pegado, es el Firewall de Atlas (IP 0.0.0.0/0)"
+  });
+});
+
+// ── 5. Routes ───────────────────────────────────────────────────────────────
 app.use('/beneficiarios', require('./routes/beneficiary.routes'));
 app.use('/actividades', require('./routes/activity.routes'));
 app.use('/voluntarios', require('./routes/volunteer.routes'));
