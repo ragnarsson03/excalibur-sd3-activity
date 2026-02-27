@@ -1,51 +1,100 @@
 <%- include('../partials/header') %>
 
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
-        <div class="card-header bg-warning text-dark">
-            <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Editar Voluntario</h4>
+    <div class="max-w-2xl mx-auto">
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <a href="/voluntarios"
+                    class="text-slate-500 hover:text-brand flex items-center gap-2 mb-2 text-sm font-medium w-fit transition-colors">
+                    <i class="ph ph-arrow-left"></i> Volver al listado
+                </a>
+                <h1 class="text-3xl font-extrabold text-slate-900">
+                    Editar Voluntario
+                </h1>
+            </div>
+            <div class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold border border-indigo-100">
+                ID: <%= voluntario._id.toString().slice(-6) %>
+            </div>
         </div>
-        <div class="card-body">
-            <form action="/voluntarios/editar/<%= voluntario._id %>" method="POST">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Nombre</label>
-                        <input type="text" name="nombre" class="form-control" required value="<%= voluntario.nombre %>">
+
+        <div class="card p-8 border border-slate-100 shadow-card bg-indigo-50/10">
+            <form action="/voluntarios/editar/<%= voluntario._id %>" method="POST" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="form-label" for="nombre">Nombres <span class="text-red-500">*</span></label>
+                        <input type="text" id="nombre" name="nombre"
+                            class="form-input focus:ring-indigo-600 focus:border-indigo-600" required
+                            value="<%= voluntario.nombre %>">
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Apellido</label>
-                        <input type="text" name="apellido" class="form-control" required
+                    <div>
+                        <label class="form-label" for="apellido">Apellidos <span class="text-red-500">*</span></label>
+                        <input type="text" id="apellido" name="apellido"
+                            class="form-input focus:ring-indigo-600 focus:border-indigo-600" required
                             value="<%= voluntario.apellido %>">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Cédula</label>
-                        <input type="text" name="cedula" class="form-control" required value="<%= voluntario.cedula %>">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="form-label" for="cedula">Cédula de Identidad <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" id="cedula" name="cedula"
+                            class="form-input focus:ring-indigo-600 focus:border-indigo-600" required
+                            value="<%= voluntario.cedula %>">
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Teléfono</label>
-                        <input type="text" name="telefono" class="form-control" required
-                            value="<%= voluntario.telefono %>">
+                    <div>
+                        <label class="form-label" for="telefono">Teléfono <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="ph-fill ph-phone text-slate-400"></i>
+                            </div>
+                            <input type="tel" id="telefono" name="telefono"
+                                class="form-input pl-10 focus:ring-indigo-600 focus:border-indigo-600" required
+                                value="<%= voluntario.telefono %>">
+                        </div>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Profesión u Oficio</label>
-                    <input type="text" name="profesion" class="form-control" required
-                        value="<%= voluntario.profesion %>">
+
+                <div>
+                    <label class="form-label" for="profesion">Profesión u Oficio <span
+                            class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ph-fill ph-briefcase text-slate-400"></i>
+                        </div>
+                        <input type="text" id="profesion" name="profesion"
+                            class="form-input pl-10 focus:ring-indigo-600 focus:border-indigo-600" required
+                            value="<%= voluntario.profesion %>">
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Disponibilidad</label>
-                    <select name="disponibilidad" class="form-select">
-                        <% ['Fines de semana','Días hábiles','Tiempo completo','Por evento'].forEach(d=> { %>
-                            <option value="<%= d %>" <%=voluntario.disponibilidad===d ? 'selected' : '' %>><%= d %>
-                            </option>
-                            <% }) %>
-                    </select>
+
+                <div>
+                    <label class="form-label" for="disponibilidad">Disponibilidad de Tiempo <span
+                            class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <select id="disponibilidad" name="disponibilidad"
+                            class="form-select focus:ring-indigo-600 focus:border-indigo-600 pr-10" required>
+                            <option value="Por evento" <%=voluntario.disponibilidad==='Por evento' ? 'selected' : '' %>
+                                >Por evento</option>
+                            <option value="Fines de semana" <%=voluntario.disponibilidad==='Fines de semana'
+                                ? 'selected' : '' %>>Fines de semana</option>
+                            <option value="Días hábiles" <%=voluntario.disponibilidad==='Días hábiles' ? 'selected' : ''
+                                %>>Días hábiles</option>
+                            <option value="Tiempo completo" <%=voluntario.disponibilidad==='Tiempo completo'
+                                ? 'selected' : '' %>>Tiempo completo</option>
+                        </select>
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                            <i class="ph-bold ph-caret-down"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <a href="/voluntarios" class="btn btn-secondary">Cancelar y Volver</a>
-                    <button type="submit" class="btn btn-warning text-dark"><i class="bi bi-floppy-fill"></i> Actualizar
-                        Voluntario</button>
+
+                <div class="pt-6 border-t border-slate-200/60 flex justify-end gap-3">
+                    <a href="/voluntarios" class="btn btn-outline bg-white border-slate-300">Cancelar</a>
+                    <button type="submit"
+                        class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-8 shadow-md shadow-indigo-200">
+                        <i class="ph-bold ph-floppy-disk"></i> Guardar Cambios
+                    </button>
                 </div>
             </form>
         </div>

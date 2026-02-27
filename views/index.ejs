@@ -1,77 +1,93 @@
 <%- include('partials/header') %>
 
-    <div class="text-center py-5">
-        <h1 class="fw-bold display-5 mb-2">
-            <i class="bi bi-house-heart-fill text-danger"></i> Fundación 100% San Agustín
-        </h1>
-        <p class="lead text-muted mb-5">Sistema de Gestión Integral — Node.js + Express + MongoDB</p>
+    <div class="max-w-4xl mx-auto text-center py-12 px-4 sm:px-6 lg:px-8">
 
-        <div class="row g-4 justify-content-center">
-
-            <div class="col-md-4 col-lg-2">
-                <a href="/beneficiarios" class="text-decoration-none">
-                    <div class="card shadow-sm h-100 text-center p-4 border-0"
-                        style="border-radius:16px; transition:.2s;"
-                        onmouseover="this.style.transform='translateY(-4px)'"
-                        onmouseout="this.style.transform='translateY(0)'">
-                        <i class="bi bi-people-fill text-primary" style="font-size:2.5rem;"></i>
-                        <h5 class="mt-3 fw-semibold">Beneficiarios</h5>
-                        <p class="text-muted small">Personas que reciben servicios</p>
-                    </div>
-                </a>
+        <!-- Hero Section -->
+        <div class="mb-16">
+            <div class="inline-flex items-center justify-center p-4 bg-brand/10 rounded-full mb-6">
+                <i class="ph-fill ph-heart text-5xl text-brand"></i>
             </div>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                Fundación 100% <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-brand to-brand-light">San Agustín</span>
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                Plataforma centralizada para la gestión institucional. Administra eficientemente los recursos,
+                voluntarios y el impacto en la comunidad.
+            </p>
+        </div>
 
-            <div class="col-md-4 col-lg-2">
-                <a href="/actividades" class="text-decoration-none">
-                    <div class="card shadow-sm h-100 text-center p-4 border-0"
-                        style="border-radius:16px; transition:.2s;"
-                        onmouseover="this.style.transform='translateY(-4px)'"
-                        onmouseout="this.style.transform='translateY(0)'">
-                        <i class="bi bi-calendar-event-fill text-success" style="font-size:2.5rem;"></i>
-                        <h5 class="mt-3 fw-semibold">Actividades</h5>
-                        <p class="text-muted small">Programas y eventos</p>
-                    </div>
-                </a>
-            </div>
+        <!-- Modules Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <div class="col-md-4 col-lg-2">
-                <a href="/voluntarios" class="text-decoration-none">
-                    <div class="card shadow-sm h-100 text-center p-4 border-0"
-                        style="border-radius:16px; transition:.2s;"
-                        onmouseover="this.style.transform='translateY(-4px)'"
-                        onmouseout="this.style.transform='translateY(0)'">
-                        <i class="bi bi-person-badge-fill text-warning" style="font-size:2.5rem;"></i>
-                        <h5 class="mt-3 fw-semibold">Voluntarios</h5>
-                        <p class="text-muted small">Personal de apoyo</p>
-                    </div>
-                </a>
-            </div>
+            <!-- Beneficiarios -->
+            <a href="/beneficiarios"
+                class="group relative bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-left overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110">
+                </div>
+                <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="ph-fill ph-users text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Beneficiarios</h3>
+                <p class="text-slate-500 text-sm">Gestiona la información de las personas que reciben asistencia en la
+                    fundación.</p>
+            </a>
 
-            <div class="col-md-4 col-lg-2">
-                <a href="/recursos" class="text-decoration-none">
-                    <div class="card shadow-sm h-100 text-center p-4 border-0"
-                        style="border-radius:16px; transition:.2s;"
-                        onmouseover="this.style.transform='translateY(-4px)'"
-                        onmouseout="this.style.transform='translateY(0)'">
-                        <i class="bi bi-box-seam-fill text-danger" style="font-size:2.5rem;"></i>
-                        <h5 class="mt-3 fw-semibold">Recursos</h5>
-                        <p class="text-muted small">Inventario de materiales</p>
-                    </div>
-                </a>
-            </div>
+            <!-- Actividades -->
+            <a href="/actividades"
+                class="group relative bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-left overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110">
+                </div>
+                <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="ph-fill ph-calendar-check text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Actividades</h3>
+                <p class="text-slate-500 text-sm">Planifica y administra eventos, talleres y jornadas de apoyo
+                    comunitario.</p>
+            </a>
 
-            <div class="col-md-4 col-lg-2">
-                <a href="/asistencias" class="text-decoration-none">
-                    <div class="card shadow-sm h-100 text-center p-4 border-0"
-                        style="border-radius:16px; transition:.2s;"
-                        onmouseover="this.style.transform='translateY(-4px)'"
-                        onmouseout="this.style.transform='translateY(0)'">
-                        <i class="bi bi-clipboard2-check-fill text-info" style="font-size:2.5rem;"></i>
-                        <h5 class="mt-3 fw-semibold">Asistencias</h5>
-                        <p class="text-muted small">Registro de participación</p>
-                    </div>
-                </a>
-            </div>
+            <!-- Voluntarios -->
+            <a href="/voluntarios"
+                class="group relative bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-left overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-brand/5 rounded-bl-full -z-10 transition-transform group-hover:scale-110">
+                </div>
+                <div class="w-14 h-14 bg-brand/10 text-brand rounded-2xl flex items-center justify-center mb-6">
+                    <i class="ph-fill ph-person-arms-spread text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Voluntarios</h3>
+                <p class="text-slate-500 text-sm">Registro de personal de apoyo, áreas de especialidad y estado de
+                    disponibilidad.</p>
+            </a>
+
+            <!-- Recursos -->
+            <a href="/recursos"
+                class="group relative bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-left overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110">
+                </div>
+                <div class="w-14 h-14 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="ph-fill ph-package text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Recursos</h3>
+                <p class="text-slate-500 text-sm">Control de inventario, insumos médicos, alimentos y materiales
+                    educativos.</p>
+            </a>
+
+            <!-- Asistencias -->
+            <a href="/asistencias"
+                class="group relative bg-white rounded-3xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-left overflow-hidden sm:col-span-2 lg:col-span-1">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110">
+                </div>
+                <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="ph-fill ph-clipboard-text text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Asistencias</h3>
+                <p class="text-slate-500 text-sm">Vincular beneficiarios con las actividades a las que han asistido.</p>
+            </a>
 
         </div>
     </div>

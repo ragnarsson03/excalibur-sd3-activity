@@ -1,4 +1,4 @@
-# Sistema de Gestión para la Fundación 100% San Agustín
+# Sistema de Gestión — Fundación 100% San Agustín
 
 Aplicación web desarrollada con Node.js, Express y MongoDB para la gestión de beneficiarios y actividades de la fundación.
 
@@ -6,98 +6,116 @@ Aplicación web desarrollada con Node.js, Express y MongoDB para la gestión de 
 
 - **Arquitectura MVC**: Modelo-Vista-Controlador para una mejor organización del código.
 - **CRUD Completo**: Funcionalidades para crear, leer, actualizar y eliminar registros.
-- **Múltiples Colecciones**: Gestión de 5 colecciones en MongoDB:
-  - `beneficiarios`
-  - `actividades`
-  - `voluntarios`
-  - `recursos`
-  - `asistencias`
-- **Diseño Responsivo**: Interfaz de usuario adaptada a diferentes dispositivos.
+- **5 Colecciones en MongoDB**:
+  - `beneficiaries` — Personas que reciben servicios
+  - `activities` — Programas y eventos
+  - `volunteers` — Personal de apoyo
+  - `resources` — Inventario de materiales
+  - `attendances` — Registro de participación
+- **Diseño Responsivo**: Interfaz adaptada a diferentes dispositivos con Bootstrap 5.
+- **Deploy en Vercel**: Configurado para entornos serverless.
 
-## 🚀 Instalación
+---
 
-1. Clona el repositorio:
-   ```bash
-   git clone <url-del-repositorio>
-   cd excalibur-sd3-activity
-   ```
+## 🚀 Instalación Local
 
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/ragnarsson03/excalibur-sd3-activity.git
+cd excalibur-sd3-activity
+```
 
-3. Configura las variables de entorno:
-   Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
-   ```env
-   MONGODB_URI=tu_cadena_de_conexion_mongodb
-   PORT=3000
-   ```
+### 2. Instalar dependencias
+```bash
+npm install
+```
 
-4. Ejecuta la aplicación:
-   ```bash
-   npm start
-   ```
+### 3. Configurar variables de entorno
+Crea un archivo `.env` en la raíz del proyecto copiando `.env.example`:
+```bash
+copy .env.example .env
+```
+Edita `.env` con tu URI de MongoDB Atlas:
+```env
+MONGODB_URI=mongodb+srv://<usuario>:<password>@cluster.mongodb.net/<dbname>?retryWrites=true&w=majority
+PORT=3000
+```
 
-## 🌐 Uso
+### 4. Ejecutar la aplicación
+```bash
+npm start
+```
 
 La aplicación estará disponible en `http://localhost:3000`.
 
-### Rutas Disponibles
+---
 
-- **Beneficiarios**:
-  - `GET /beneficiarios` - Listar todos los beneficiarios
-  - `GET /beneficiarios/new` - Crear nuevo beneficiario
-  - `POST /beneficiarios` - Guardar nuevo beneficiario
-  - `GET /beneficiarios/:id/edit` - Editar beneficiario
-  - `POST /beneficiarios/:id/edit` - Actualizar beneficiario
-  - `POST /beneficiarios/:id/delete` - Eliminar beneficiario
-  - `GET /beneficiarios/consulta` - Consulta personalizada
+## ☁️ Despliegue en Vercel
 
-- **Actividades**:
-  - `GET /actividades` - Listar todas las actividades
-  - `GET /actividades/new` - Crear nueva actividad
-  - `POST /actividades` - Guardar nueva actividad
-  - `GET /actividades/:id/edit` - Editar actividad
-  - `POST /actividades/:id/edit` - Actualizar actividad
-  - `POST /actividades/:id/delete` - Eliminar actividad
+### Requisitos previos
+- Cuenta en [vercel.com](https://vercel.com)
+- Repositorio en GitHub conectado a Vercel
 
-## 🛠️ Tecnologías Utilizadas
+### Pasos
 
-- **Node.js** - Entorno de ejecución
-- **Express** - Framework web
-- **MongoDB** - Base de datos NoSQL
-- **Mongoose** - ODM para MongoDB
-- **EJS** - Motor de plantillas
-- **Vercel** - Despliegue (opcional)
+1. **Importar proyecto** en Vercel desde GitHub
+2. **Configurar variable de entorno** en Vercel:
+   - Ve a: `Project → Settings → Environment Variables`
+   - Agrega: `MONGODB_URI` con el valor de tu URI de MongoDB Atlas
+3. **Desplegar**: Vercel detecta automáticamente el `vercel.json` y despliega
+
+> ⚠️ **Importante**: Si `MONGODB_URI` no está configurada en Vercel, la aplicación dará error. Las variables del `.env` local **no se suben a Vercel**.
+
+---
+
+## 🌐 Rutas Disponibles
+
+| Módulo | Ruta base | CRUD |
+|---|---|---|
+| Beneficiarios | `/beneficiarios` | ✅ + Consulta |
+| Actividades | `/actividades` | ✅ + Filtro por área |
+| Voluntarios | `/voluntarios` | ✅ |
+| Recursos | `/recursos` | ✅ |
+| Asistencias | `/asistencias` | ✅ |
+
+---
+
+## 🛠️ Tecnologías
+
+| Tecnología | Versión | Uso |
+|---|---|---|
+| Node.js | ≥18 | Entorno de ejecución |
+| Express | ^5.x | Framework web |
+| MongoDB | Atlas | Base de datos NoSQL |
+| Mongoose | ^9.x | ODM para MongoDB |
+| EJS | ^4.x | Motor de plantillas |
+| Bootstrap | 5.3.3 | UI / Diseño responsivo |
+| Vercel | — | Plataforma de despliegue |
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+excalibur-sd3-activity/
+├── config/
+│   └── database.js          # Conexión a MongoDB (con caché serverless)
+├── controllers/             # Lógica de negocio (CRUD)
+├── models/                  # Schemas de Mongoose
+├── routes/                  # Definición de rutas
+├── views/                   # Plantillas EJS
+├── public/                  # Assets estáticos
+├── .env.example             # Plantilla de variables de entorno
+├── vercel.json              # Configuración de despliegue serverless
+└── server.js                # Punto de entrada
+```
+
+---
+
+## 👥 Autores
+
+- Eliezer González — Grupo SD3
 
 ## 📄 Licencia
 
-Este proyecto es para fines académicos.
-
-## 👥 Autor
-
-- [Tu Nombre]
-- [Tu Grupo]
-
-## 📝 Notas de la Profesora
-
-> "Inmaculada Maldonado, [19/2/2026 7:46 p. m.]
->
-> Para esta evaluación vamos a crear nuestro propio proyecto con Node.Js y Mongo db.
->
-> Una colección de documentos , ustedes escogerán el tema a trabajar o el mismo de proyecto , en grupo considerando las siguientes condiciones:
->
-> Mínimo cinco colecciones en la base de datos.
->
-> Cada colección con un mínimo de cuatro campos y documentos
->
-> Desarrollar un módulo el cual genere CRUD Create (Crear), Read (Leer), Update (Actualizar) y Delete (Borrar) y una consulta sencilla se debe de realizar en Node.js y conexión base de dato MongoDb .
->
-> Toma captura de Cluster en MongoDB Compass o Atlas donde se vean las 5 colecciones.Guardar las capturas de pantallas de las colecciones en MongoDb y la conexión.
->
-> Subir el proyecto a un repositorio de github y copiar el enlance de tu Github,el código fuente pegado con formato y las capturas de pantallas organizadas .
->
-> Asegúrate de que el archivo README.md explique cómo ejecutar tu proyecto (npm install y npm start).
->
-> Una vez culminado tu sistema, guárdalo en formato .pdf, identifícalo con tu nombre y apellido y cárgalo en el 
+Proyecto académico — Universidad Nacional Experimental de las Telecomunicaciones (UNET)

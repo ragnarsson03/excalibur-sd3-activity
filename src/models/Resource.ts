@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose, { Schema } from 'mongoose';
+import { IResource } from '../interfaces/IResource';
 
-const ResourceSchema = new mongoose.Schema({
+const ResourceSchema: Schema = new Schema<IResource>({
     nombre: {
         type: String,
         required: [true, 'El nombre del recurso es obligatorio'],
@@ -23,4 +24,4 @@ const ResourceSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Resource', ResourceSchema);
+export default mongoose.model<IResource>('Resource', ResourceSchema);

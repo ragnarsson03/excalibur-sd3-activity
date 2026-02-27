@@ -1,77 +1,115 @@
 <%- include('../partials/header') %>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-funnel-fill text-success"></i> Consulta de Actividades por Área</h2>
-        <a href="/actividades" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
+    <div class="mb-10 text-center max-w-2xl mx-auto">
+        <h1 class="text-3xl font-extrabold text-slate-900 mb-3 flex items-center justify-center gap-3">
+            <i class="ph-fill ph-funnel text-brand"></i> Explorar Actividades
+        </h1>
+        <p class="text-slate-500">Filtra los eventos y jornadas de acuerdo a su área de impacto en la comunidad.</p>
     </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form action="/actividades/consulta" method="GET" class="d-flex gap-2 align-items-end">
-                <div class="flex-grow-1">
-                    <label class="form-label fw-bold">Filtrar por Área</label>
-                    <select name="area" class="form-select">
-                        <option value="Todas" <%=areaSeleccionada==='Todas' ? 'selected' : '' %>>Todas las áreas
-                        </option>
-                        <% areas.forEach(a=> { %>
-                            <option value="<%= a %>" <%=areaSeleccionada===a ? 'selected' : '' %>><%= a %>
-                            </option>
-                            <% }) %>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-success"><i class="bi bi-search"></i> Buscar</button>
-            </form>
-        </div>
+    <!-- Filters -->
+    <div class="max-w-4xl mx-auto mb-10 flex flex-wrap justify-center gap-2">
+        <a href="/actividades/consulta"
+            class="px-4 py-2 rounded-full font-medium text-sm transition-all <%= areaSeleccionada === 'Todas' ? 'bg-slate-800 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50' %>">
+            Todas
+        </a>
+        <% areas.forEach(area=> {
+            let currentClass = 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50';
+            if (areaSeleccionada === area) {
+            switch(area) {
+            case 'Salud': currentClass = 'bg-rose-600 text-white shadow-md shadow-rose-200'; break;
+            case 'Educación': currentClass = 'bg-amber-500 text-white shadow-md shadow-amber-200'; break;
+            case 'Cultura': currentClass = 'bg-fuchsia-600 text-white shadow-md shadow-fuchsia-200'; break;
+            case 'Deporte': currentClass = 'bg-emerald-600 text-white shadow-md shadow-emerald-200'; break;
+            case 'Social': currentClass = 'bg-brand text-white shadow-md shadow-brand/20'; break;
+            }
+            }
+            %>
+            <a href="/actividades/consulta?area=<%= encodeURIComponent(area) %>"
+                class="px-4 py-2 rounded-full font-medium text-sm transition-all <%= currentClass %>">
+                <%= area %>
+            </a>
+            <% }) %>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <% if (actividades.length===0) { %>
-                <div class="alert alert-warning text-center">
-                    No se encontraron actividades para el área seleccionada.
-                </div>
-                <% } else { %>
-                    <p class="text-muted">Mostrando <strong>
-                            <%= actividades.length %>
-                        </strong> resultado(s) para: <span class="badge bg-success">
-                            <%= areaSeleccionada %>
-                        </span></p>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Área</th>
-                                    <th>Fecha</th>
-                                    <th>Lugar</th>
-                                    <th>Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% actividades.forEach(a=> { %>
-                                    <tr>
-                                        <td><strong>
-                                                <%= a.nombre %>
-                                            </strong></td>
-                                        <td><span class="badge bg-success">
-                                                <%= a.area %>
-                                            </span></td>
-                                        <td>
-                                            <%= new Date(a.fecha).toLocaleDateString('es-VE') %>
-                                        </td>
-                                        <td>
-                                            <%= a.lugar %>
-                                        </td>
-                                        <td class="text-muted small">
-                                            <%= a.descripcion %>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
+    <!-- Results -->
+    <div class="mb-4 flex justify-between items-center px-2">
+        <h2 class="text-lg font-semibold text-slate-800">
+            Área: <span class="text-brand">
+                <%= areaSeleccionada %>
+            </span>
+        </h2>
+        <span class="badge badge-blue px-3 py-1">
+            <%= actividades.length %> encontradas
+        </span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% if (actividades.length> 0) { %>
+            <% actividades.forEach(act=> {
+                let badgeClass = 'bg-slate-100 text-slate-800';
+                let iconClass = 'ph-calendar';
+                switch(act.area) {
+                case 'Salud': badgeClass = 'text-rose-600 bg-rose-50'; iconClass = 'ph-heartbeat text-rose-500'; break;
+                case 'Educación': badgeClass = 'text-amber-700 bg-amber-50'; iconClass = 'ph-books text-amber-500';
+                break;
+                case 'Cultura': badgeClass = 'text-fuchsia-700 bg-fuchsia-50'; iconClass = 'ph-palette
+                text-fuchsia-500'; break;
+                case 'Deporte': badgeClass = 'text-emerald-700 bg-emerald-50'; iconClass = 'ph-person-simple-run
+                text-emerald-500'; break;
+                case 'Social': badgeClass = 'text-brand bg-brand/10'; iconClass = 'ph-users-three text-brand'; break;
+                }
+                %>
+                <div
+                    class="card p-6 border border-slate-100 shadow-soft hover:shadow-card transition-shadow flex flex-col h-full bg-white relative">
+                    <div class="flex items-start justify-between mb-4">
+                        <div
+                            class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-2xl <%= badgeClass %>">
+                            <i class="ph-fill <%= iconClass %>"></i>
+                        </div>
                     </div>
-                    <% } %>
-        </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 leading-tight">
+                        <%= act.nombre %>
+                    </h3>
+                    <p class="text-slate-600 text-sm mb-6 flex-grow line-clamp-3">
+                        <%= act.descripcion %>
+                    </p>
+
+                    <div class="space-y-3 pt-4 border-t border-slate-100 mt-auto text-sm text-slate-600">
+                        <p class="flex items-center gap-2"><i class="ph-fill ph-calendar-blank text-slate-400"></i>
+                            <%= new Date(act.fecha).toLocaleDateString() %>
+                        </p>
+                        <p class="flex items-start gap-2"><i class="ph-fill ph-map-pin text-slate-400 mt-0.5"></i> <span
+                                class="line-clamp-1">
+                                <%= act.lugar %>
+                            </span></p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            <%= act.area %>
+                        </span>
+                        <a href="/actividades/editar/<%= act._id %>"
+                            class="text-sm font-semibold text-blue-600 hover:text-blue-800">
+                            Ver Detalles <i class="ph ph-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <% }) %>
+                    <% } else { %>
+                        <div class="col-span-full card p-12 text-center border-0 shadow-none bg-slate-50/50">
+                            <i class="ph-fill ph-tray text-6xl text-slate-300 mb-4 inline-block"></i>
+                            <h3 class="text-lg font-bold text-slate-800 mb-1">Sin actividades</h3>
+                            <p class="text-slate-500">No hay actividades registradas en el área de <%= areaSeleccionada
+                                    %>.</p>
+                            <% if (areaSeleccionada !=='Todas' ) { %>
+                                <a href="/actividades/consulta"
+                                    class="text-brand hover:underline mt-4 inline-block font-medium">Ver todas las
+                                    áreas</a>
+                                <% } %>
+                        </div>
+                        <% } %>
     </div>
 
     <%- include('../partials/footer') %>

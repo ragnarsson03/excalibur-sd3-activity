@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose, { Schema } from 'mongoose';
+import { IBeneficiary } from '../interfaces/IBeneficiary';
 
-const BeneficiarySchema = new mongoose.Schema({
+const BeneficiarySchema: Schema = new Schema<IBeneficiary>({
     nombre: {
         type: String,
         required: [true, 'El nombre es obligatorio'],
@@ -32,4 +33,4 @@ const BeneficiarySchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Beneficiary', BeneficiarySchema);
+export default mongoose.model<IBeneficiary>('Beneficiary', BeneficiarySchema);

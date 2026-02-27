@@ -1,6 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const ctrl = require('../controllers/resource.controller');
+import { Router } from 'express';
+import * as ctrl from '../controllers/attendance.controller';
+
+const router = Router();
 
 // READ   - List all
 router.get('/', ctrl.getAll);
@@ -18,4 +19,4 @@ router.post('/editar/:id', ctrl.update);
 // DELETE - Remove record
 router.post('/eliminar/:id', ctrl.remove);
 
-module.exports = router;
+export default router;

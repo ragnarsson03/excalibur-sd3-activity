@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose, { Schema } from 'mongoose';
+import { IVolunteer } from '../interfaces/IVolunteer';
 
-const VolunteerSchema = new mongoose.Schema({
+const VolunteerSchema: Schema = new Schema<IVolunteer>({
     nombre: {
         type: String,
         required: [true, 'El nombre es obligatorio'],
@@ -34,4 +35,4 @@ const VolunteerSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Volunteer', VolunteerSchema);
+export default mongoose.model<IVolunteer>('Volunteer', VolunteerSchema);

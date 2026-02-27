@@ -1,66 +1,100 @@
 <%- include('../partials/header') %>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-person-badge-fill text-warning"></i> Lista de Voluntarios</h2>
-        <a href="/voluntarios/crear" class="btn btn-warning text-dark"><i class="bi bi-plus-circle-fill"></i> Nuevo
-            Voluntario</a>
+    <div class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
+                <i class="ph-fill ph-person-arms-spread text-brand bg-brand/10 p-2 rounded-xl"></i>
+                Gestión de Voluntarios
+            </h1>
+            <p class="text-slate-500 mt-1 ml-[3.25rem]">Personal de apoyo y fuerza colaborativa.</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="/voluntarios/crear" class="btn btn-primary shadow-lg shadow-brand/20">
+                <i class="ph ph-plus-circle"></i> Nuevo Voluntario
+            </a>
+        </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <% if (voluntarios.length===0) { %>
-                <div class="alert alert-info text-center">Aún no hay voluntarios registrados. ¡Añade el primero!</div>
-                <% } else { %>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Cédula</th>
-                                    <th>Nombre</th>
-                                    <th>Profesión</th>
-                                    <th>Disponibilidad</th>
-                                    <th>Teléfono</th>
-                                    <th class="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% voluntarios.forEach(v=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= v.cedula %>
-                                        </td>
-                                        <td><strong>
-                                                <%= v.nombre %>
-                                                    <%= v.apellido %>
-                                            </strong></td>
-                                        <td>
+    <div class="card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre y Apellido</th>
+                        <th scope="col">Contacto</th>
+                        <th scope="col">Profesión / Oficio</th>
+                        <th scope="col">Disponibilidad</th>
+                        <th scope="col" class="text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (voluntarios.length===0) { %>
+                        <tr>
+                            <td colspan="5" class="py-12 text-center text-slate-500 bg-slate-50/50">
+                                <div class="flex flex-col items-center justify-center gap-3">
+                                    <i class="ph-fill ph-hand-heart text-5xl text-slate-300"></i>
+                                    <span class="text-sm font-medium">Aún no hay voluntarios registrados.</span>
+                                    <a href="/voluntarios/crear"
+                                        class="text-brand text-sm hover:underline font-semibold mt-2">Sumar el
+                                        primero</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <% } else { %>
+                            <% voluntarios.forEach(v=> { %>
+                                <tr class="group">
+                                    <td class="whitespace-nowrap font-medium text-slate-900 flex items-center gap-2">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs font-bold border border-brand/20">
+                                            <%= v.nombre.charAt(0) %>
+                                                <%= v.apellido.charAt(0) %>
+                                        </div>
+                                        <%= v.nombre %>
+                                            <%= v.apellido %>
+                                    </td>
+                                    <td class="whitespace-nowrap">
+                                        <%= v.telefono %>
+                                    </td>
+                                    <td class="whitespace-nowrap">
+                                        <span
+                                            class="bg-indigo-50 text-indigo-700 font-medium px-2.5 py-1 rounded-md text-xs border border-indigo-100">
                                             <%= v.profesion %>
-                                        </td>
-                                        <td><span class="badge bg-warning text-dark">
+                                        </span>
+                                    </td>
+                                    <td class="whitespace-nowrap">
+                                        <% let dispClass='' ; switch(v.disponibilidad) { case 'Fines de semana' :
+                                            dispClass='badge-purple' ; break; case 'Días hábiles' :
+                                            dispClass='badge-blue' ; break; case 'Tiempo completo' :
+                                            dispClass='badge-green' ; break; case 'Por evento' :
+                                            dispClass='badge-orange' ; break; } %>
+                                            <span class="badge <%= dispClass %>">
                                                 <%= v.disponibilidad %>
-                                            </span></td>
-                                        <td>
-                                            <%= v.telefono %>
-                                        </td>
-                                        <td class="text-center">
+                                            </span>
+                                    </td>
+                                    <td class="whitespace-nowrap text-right">
+                                        <div
+                                            class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <a href="/voluntarios/editar/<%= v._id %>"
-                                                class="btn btn-sm btn-outline-warning">
-                                                <i class="bi bi-pencil-square"></i> Editar
+                                                class="btn bg-blue-50 text-blue-600 hover:bg-blue-100 !p-2 rounded-lg"
+                                                title="Editar">
+                                                <i class="ph ph-pencil-simple leading-none text-lg"></i>
                                             </a>
                                             <form action="/voluntarios/eliminar/<%= v._id %>" method="POST"
-                                                class="d-inline"
-                                                onsubmit="return confirm('¿Eliminar este voluntario permanentemente?');">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash3-fill"></i> Eliminar
+                                                class="inline"
+                                                onsubmit="return confirm('¿Retirar voluntario de la base de datos?');">
+                                                <button type="submit"
+                                                    class="btn bg-red-50 text-red-600 hover:bg-red-100 !p-2 rounded-lg cursor-pointer"
+                                                    title="Eliminar">
+                                                    <i class="ph ph-trash leading-none text-lg"></i>
                                                 </button>
                                             </form>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-                    <% } %>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                    <% } %>
+                </tbody>
+            </table>
         </div>
     </div>
 

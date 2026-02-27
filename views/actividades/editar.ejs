@@ -1,49 +1,94 @@
 <%- include('../partials/header') %>
 
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
-        <div class="card-header bg-warning text-dark">
-            <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Editar Actividad</h4>
+    <div class="max-w-2xl mx-auto">
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <a href="/actividades"
+                    class="text-slate-500 hover:text-blue-600 flex items-center gap-2 mb-2 text-sm font-medium w-fit transition-colors">
+                    <i class="ph ph-arrow-left"></i> Volver al listado
+                </a>
+                <h1 class="text-3xl font-extrabold text-slate-900">
+                    Editar Actividad
+                </h1>
+            </div>
+            <div class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold border border-blue-100">
+                ID: <%= actividad._id.toString().slice(-6) %>
+            </div>
         </div>
-        <div class="card-body">
-            <form action="/actividades/editar/<%= actividad._id %>" method="POST">
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Nombre de la Actividad</label>
-                    <input type="text" name="nombre" class="form-control" required value="<%= actividad.nombre %>">
+        <div class="card p-8 border border-slate-100 shadow-card">
+            <form action="/actividades/editar/<%= actividad._id %>" method="POST" class="space-y-6">
+                <div>
+                    <label class="form-label" for="nombre">Nombre de la Actividad <span
+                            class="text-red-500">*</span></label>
+                    <input type="text" id="nombre" name="nombre" class="form-input focus:ring-blue-500" required
+                        value="<%= actividad.nombre %>">
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Descripción</label>
-                    <textarea name="descripcion" class="form-control" rows="3"
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="form-label" for="fecha">Fecha y Hora <span class="text-red-500">*</span></label>
+                        <% // Format date to YYYY-MM-DDThh:mm for datetime-local let dateObj=new Date(actividad.fecha);
+                            dateObj.setMinutes(dateObj.getMinutes() - dateObj.getTimezoneOffset()); let
+                            formattedDate=dateObj.toISOString().slice(0, 16); %>
+                            <input type="datetime-local" id="fecha" name="fecha" class="form-input focus:ring-blue-500"
+                                required value="<%= formattedDate %>">
+                    </div>
+                    <div>
+                        <label class="form-label" for="area">Área de Impacto <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <select id="area" name="area" class="form-select focus:ring-blue-500 pr-10" required>
+                                <% if (typeof areas !=='undefined' ) { %>
+                                    <% areas.forEach(area=> { %>
+                                        <option value="<%= area %>" <%=actividad.area===area ? 'selected' : '' %>><%=
+                                                area %>
+                                        </option>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <option value="Salud" <%=actividad.area==='Salud' ? 'selected' : '' %>
+                                                    >Salud</option>
+                                                <option value="Educación" <%=actividad.area==='Educación' ? 'selected'
+                                                    : '' %>>Educación</option>
+                                                <option value="Cultura" <%=actividad.area==='Cultura' ? 'selected' : ''
+                                                    %>>Cultura</option>
+                                                <option value="Deporte" <%=actividad.area==='Deporte' ? 'selected' : ''
+                                                    %>>Deporte</option>
+                                                <option value="Social" <%=actividad.area==='Social' ? 'selected' : '' %>
+                                                    >Social</option>
+                                                <% } %>
+                            </select>
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                                <i class="ph-bold ph-caret-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label" for="lugar">Lugar Físico <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ph-fill ph-map-pin text-slate-400"></i>
+                        </div>
+                        <input type="text" id="lugar" name="lugar" class="form-input pl-10 focus:ring-blue-500" required
+                            value="<%= actividad.lugar %>">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label" for="descripcion">Descripción y Objetivos <span
+                            class="text-red-500">*</span></label>
+                    <textarea id="descripcion" name="descripcion" rows="4"
+                        class="form-input resize-none focus:ring-blue-500"
                         required><%= actividad.descripcion %></textarea>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Fecha</label>
-                        <input type="date" name="fecha" class="form-control" required
-                            value="<%= actividad.fecha ? actividad.fecha.toISOString().split('T')[0] : '' %>">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Área</label>
-                        <select name="area" class="form-select" required>
-                            <% ['Salud','Educación','Cultura','Deporte','Social'].forEach(a=> { %>
-                                <option value="<%= a %>" <%=actividad.area===a ? 'selected' : '' %>><%= a %>
-                                </option>
-                                <% }) %>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Lugar</label>
-                    <input type="text" name="lugar" class="form-control" required value="<%= actividad.lugar %>">
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    <a href="/actividades" class="btn btn-secondary">Cancelar y Volver</a>
-                    <button type="submit" class="btn btn-warning"><i class="bi bi-floppy-fill"></i> Actualizar
-                        Actividad</button>
+                <div class="pt-6 border-t border-slate-100 flex justify-end gap-3">
+                    <a href="/actividades" class="btn btn-outline">Cancelar</a>
+                    <button type="submit" class="btn bg-blue-600 hover:bg-blue-700 text-white px-8">
+                        Guardar Cambios
+                    </button>
                 </div>
             </form>
         </div>

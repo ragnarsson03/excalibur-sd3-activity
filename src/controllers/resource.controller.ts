@@ -1,7 +1,8 @@
-const Resource = require('../models/Resource');
+import { Request, Response } from 'express';
+import Resource from '../models/Resource';
 
 // READ - Get all resources
-exports.getAll = async (req, res) => {
+export const getAll = async (_req: Request, res: Response): Promise<void> => {
     try {
         const resources = await Resource.find().sort({ nombre: 1 });
         res.render('recursos/index', { recursos: resources });
@@ -12,12 +13,12 @@ exports.getAll = async (req, res) => {
 };
 
 // CREATE - Show create form
-exports.showCreateForm = (req, res) => {
+export const showCreateForm = (_req: Request, res: Response): void => {
     res.render('recursos/crear', { error: null, datos: {} });
 };
 
 // CREATE - Process new resource
-exports.create = async (req, res) => {
+export const create = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, tipo, cantidad, estado } = req.body;
         await Resource.create({ nombre, tipo, cantidad, estado });
@@ -32,10 +33,10 @@ exports.create = async (req, res) => {
 };
 
 // UPDATE - Show edit form
-exports.showEditForm = async (req, res) => {
+export const showEditForm = async (req: Request, res: Response): Promise<void> => {
     try {
         const resource = await Resource.findById(req.params.id);
-        if (!resource) return res.status(404).render('404');
+        if (!resource) { res.status(404).render('404'); return; }
         res.render('recursos/editar', { recurso: resource });
     } catch (error) {
         console.error('Error fetching resource for edit:', error);
@@ -44,10 +45,11 @@ exports.showEditForm = async (req, res) => {
 };
 
 // UPDATE - Process update
-exports.update = async (req, res) => {
+export const update = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, tipo, cantidad, estado } = req.body;
-        await Resource.findByIdAndUpdate(req.params.id,
+        await Resource.findByIdAndUpdate(
+            req.params.id,
             { nombre, tipo, cantidad, estado },
             { new: true, runValidators: true }
         );
@@ -59,7 +61,7 @@ exports.update = async (req, res) => {
 };
 
 // DELETE - Remove resource
-exports.remove = async (req, res) => {
+export const remove = async (req: Request, res: Response): Promise<void> => {
     try {
         await Resource.findByIdAndDelete(req.params.id);
         res.redirect('/recursos');

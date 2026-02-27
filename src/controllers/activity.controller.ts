@@ -1,7 +1,10 @@
-const Activity = require('../models/Activity');
+import { Request, Response } from 'express';
+import Activity from '../models/Activity';
+
+const AREAS = ['Salud', 'Educación', 'Cultura', 'Deporte', 'Social'] as const;
 
 // READ - Get all activities
-exports.getAll = async (req, res) => {
+export const getAll = async (_req: Request, res: Response): Promise<void> => {
     try {
         const activities = await Activity.find().sort({ fecha: -1 });
         res.render('actividades/index', { actividades: activities });
@@ -12,12 +15,12 @@ exports.getAll = async (req, res) => {
 };
 
 // CREATE - Show create form
-exports.showCreateForm = (req, res) => {
-    res.render('actividades/crear', { error: null, datos: {} });
+export const showCreateForm = (_req: Request, res: Response): void => {
+    res.render('actividades/crear', { error: null, datos: {}, areas: AREAS });
 };
 
 // CREATE - Process new activity
-exports.create = async (req, res) => {
+export const create = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, descripcion, fecha, area, lugar } = req.body;
         await Activity.create({ nombre, descripcion, fecha, area, lugar });
@@ -26,17 +29,18 @@ exports.create = async (req, res) => {
         console.error('Error creating activity:', error);
         res.render('actividades/crear', {
             error: 'Error al guardar la actividad. Verifica los datos.',
-            datos: req.body
+            datos: req.body,
+            areas: AREAS
         });
     }
 };
 
 // UPDATE - Show edit form
-exports.showEditForm = async (req, res) => {
+export const showEditForm = async (req: Request, res: Response): Promise<void> => {
     try {
         const activity = await Activity.findById(req.params.id);
-        if (!activity) return res.status(404).render('404');
-        res.render('actividades/editar', { actividad: activity });
+        if (!activity) { res.status(404).render('404'); return; }
+        res.render('actividades/editar', { actividad: activity, areas: AREAS });
     } catch (error) {
         console.error('Error fetching activity for edit:', error);
         res.status(500).render('500', { message: 'Error loading activity' });
@@ -44,10 +48,11 @@ exports.showEditForm = async (req, res) => {
 };
 
 // UPDATE - Process update
-exports.update = async (req, res) => {
+export const update = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, descripcion, fecha, area, lugar } = req.body;
-        await Activity.findByIdAndUpdate(req.params.id,
+        await Activity.findByIdAndUpdate(
+            req.params.id,
             { nombre, descripcion, fecha, area, lugar },
             { new: true, runValidators: true }
         );
@@ -59,7 +64,7 @@ exports.update = async (req, res) => {
 };
 
 // DELETE - Remove activity
-exports.remove = async (req, res) => {
+export const remove = async (req: Request, res: Response): Promise<void> => {
     try {
         await Activity.findByIdAndDelete(req.params.id);
         res.redirect('/actividades');
@@ -70,13 +75,16 @@ exports.remove = async (req, res) => {
 };
 
 // QUERY - Search activities by area
-exports.search = async (req, res) => {
+export const search = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { area } = req.query;
+        const { area } = req.query as { area?: string };
         const query = area && area !== 'Todas' ? { area } : {};
         const activities = await Activity.find(query).sort({ fecha: -1 });
-        const areas = ['Salud', 'Educación', 'Cultura', 'Deporte', 'Social'];
-        res.render('actividades/consulta', { actividades: activities, areas, areaSeleccionada: area || 'Todas' });
+        res.render('actividades/consulta', {
+            actividades: activities,
+            areas: AREAS,
+            areaSeleccionada: area || 'Todas'
+        });
     } catch (error) {
         console.error('Error in activity search:', error);
         res.status(500).render('500', { message: 'Error in search' });

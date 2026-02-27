@@ -1,64 +1,115 @@
 <%- include('../partials/header') %>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-box-seam-fill text-danger"></i> Lista de Recursos</h2>
-        <a href="/recursos/crear" class="btn btn-danger"><i class="bi bi-plus-circle-fill"></i> Nuevo Recurso</a>
+    <div class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
+                <i class="ph-fill ph-package text-emerald-600 bg-emerald-100 p-2 rounded-xl"></i>
+                Control de Recursos
+            </h1>
+            <p class="text-slate-500 mt-1 ml-[3.25rem]">Inventario de insumos y materiales.</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="/recursos/crear"
+                class="btn bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-600/20">
+                <i class="ph ph-plus-circle"></i> Nuevo Recurso
+            </a>
+        </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <% if (recursos.length===0) { %>
-                <div class="alert alert-info text-center">Aún no hay recursos registrados. ¡Añade el primero!</div>
-                <% } else { %>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Tipo</th>
-                                    <th>Cantidad</th>
-                                    <th>Estado</th>
-                                    <th class="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% recursos.forEach(r=> { %>
-                                    <tr>
-                                        <td><strong>
-                                                <%= r.nombre %>
-                                            </strong></td>
-                                        <td>
-                                            <%= r.tipo %>
-                                        </td>
-                                        <td><span class="fw-bold">
-                                                <%= r.cantidad %>
-                                            </span></td>
-                                        <td>
-                                            <% const badgeClass=r.estado==='Disponible' ? 'bg-success' :
-                                                r.estado==='Agotado' ? 'bg-danger' : 'bg-secondary' ; %>
-                                                <span class="badge <%= badgeClass %>">
-                                                    <%= r.estado %>
-                                                </span>
-                                        </td>
-                                        <td class="text-center">
+    <div class="card overflow-hidden border border-slate-100">
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th scope="col" class="text-slate-500 font-bold">Recurso</th>
+                        <th scope="col" class="text-slate-500 font-bold">Categoría</th>
+                        <th scope="col" class="text-center text-slate-500 font-bold">Cantidad</th>
+                        <th scope="col" class="text-center text-slate-500 font-bold">Estado</th>
+                        <th scope="col" class="text-right text-slate-500 font-bold">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <% if (recursos.length===0) { %>
+                        <tr>
+                            <td colspan="5" class="py-16 text-center text-slate-500">
+                                <div class="flex flex-col items-center justify-center gap-4">
+                                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
+                                        <i class="ph-fill ph-box-open text-4xl text-slate-300"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-700 font-semibold mb-1">Inventario Vacio</p>
+                                        <span class="text-sm">Aún no hay recursos registrados en el sistema.</span>
+                                    </div>
+                                    <a href="/recursos/crear"
+                                        class="btn bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-semibold mt-2 border border-emerald-200">Registrar
+                                        Primer Insumo</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <% } else { %>
+                            <% recursos.forEach(r=> { %>
+                                <tr class="group hover:bg-emerald-50/30 transition-colors duration-150">
+                                    <td class="whitespace-nowrap font-bold text-slate-800 flex items-center gap-3">
+                                        <% let iconC='ph-package' ; let colorC='text-slate-500 bg-slate-100' ;
+                                            switch(r.tipo) { case 'Alimentos' : iconC='ph-bowl-food' ;
+                                            colorC='text-amber-600 bg-amber-100' ; break; case 'Medicina' :
+                                            iconC='ph-pill' ; colorC='text-rose-600 bg-rose-100' ; break;
+                                            case 'Material Educativo' : iconC='ph-books' ;
+                                            colorC='text-blue-600 bg-blue-100' ; break; case 'Equipos' :
+                                            iconC='ph-desktop' ; colorC='text-purple-600 bg-purple-100' ; break;
+                                            case 'Otros' : iconC='ph-dots-three' ; colorC='text-slate-600 bg-slate-200'
+                                            ; break; } %>
+                                            <div
+                                                class="w-10 h-10 rounded-lg flex items-center justify-center <%= colorC %>">
+                                                <i class="ph-fill <%= iconC %> text-xl"></i>
+                                            </div>
+                                            <%= r.nombre %>
+                                    </td>
+                                    <td class="whitespace-nowrap text-slate-600 font-medium">
+                                        <%= r.tipo %>
+                                    </td>
+                                    <td class="whitespace-nowrap text-center">
+                                        <span
+                                            class="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-bold border border-slate-200 inline-block min-w-[3rem]">
+                                            <%= r.cantidad %>
+                                        </span>
+                                    </td>
+                                    <td class="whitespace-nowrap text-center">
+                                        <% let statusC='' ; switch(r.estado) { case 'Disponible' :
+                                            statusC='bg-emerald-100 text-emerald-700 border-emerald-200' ; break;
+                                            case 'En uso' : statusC='bg-blue-100 text-blue-700 border-blue-200' ; break;
+                                            case 'Agotado' : statusC='bg-red-100 text-red-700 border-red-200' ; break; }
+                                            %>
+                                            <span
+                                                class="px-2.5 py-1 rounded-md text-xs font-semibold border <%= statusC %>">
+                                                <span
+                                                    class="inline-block w-1.5 h-1.5 rounded-full mr-1 <%= statusC.replace('bg-', 'bg-').replace('text-', 'bg-').split(' ')[1] %>"></span>
+                                                <%= r.estado %>
+                                            </span>
+                                    </td>
+                                    <td class="whitespace-nowrap text-right pr-4">
+                                        <div
+                                            class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <a href="/recursos/editar/<%= r._id %>"
-                                                class="btn btn-sm btn-outline-warning">
-                                                <i class="bi bi-pencil-square"></i> Editar
+                                                class="btn bg-white border border-slate-200 text-slate-600 hover:text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50 !p-1.5 rounded transition-all shadow-sm"
+                                                title="Editar">
+                                                <i class="ph ph-pencil-simple text-lg"></i>
                                             </a>
-                                            <form action="/recursos/eliminar/<%= r._id %>" method="POST"
-                                                class="d-inline"
-                                                onsubmit="return confirm('¿Eliminar este recurso permanentemente?');">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash3-fill"></i> Eliminar
+                                            <form action="/recursos/eliminar/<%= r._id %>" method="POST" class="inline"
+                                                onsubmit="return confirm('¿Eliminar este recurso del inventario permanentemente?');">
+                                                <button type="submit"
+                                                    class="btn bg-white border border-slate-200 text-slate-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50 !p-1.5 rounded transition-all shadow-sm cursor-pointer"
+                                                    title="Eliminar">
+                                                    <i class="ph ph-trash text-lg"></i>
                                                 </button>
                                             </form>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-                    <% } %>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                    <% } %>
+                </tbody>
+            </table>
         </div>
     </div>
 

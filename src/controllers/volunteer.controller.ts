@@ -1,7 +1,8 @@
-const Volunteer = require('../models/Volunteer');
+import { Request, Response } from 'express';
+import Volunteer from '../models/Volunteer';
 
 // READ - Get all volunteers
-exports.getAll = async (req, res) => {
+export const getAll = async (_req: Request, res: Response): Promise<void> => {
     try {
         const volunteers = await Volunteer.find().sort({ apellido: 1 });
         res.render('voluntarios/index', { voluntarios: volunteers });
@@ -12,12 +13,12 @@ exports.getAll = async (req, res) => {
 };
 
 // CREATE - Show create form
-exports.showCreateForm = (req, res) => {
+export const showCreateForm = (_req: Request, res: Response): void => {
     res.render('voluntarios/crear', { error: null, datos: {} });
 };
 
 // CREATE - Process new volunteer
-exports.create = async (req, res) => {
+export const create = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, apellido, cedula, telefono, profesion, disponibilidad } = req.body;
         await Volunteer.create({ nombre, apellido, cedula, telefono, profesion, disponibilidad });
@@ -32,10 +33,10 @@ exports.create = async (req, res) => {
 };
 
 // UPDATE - Show edit form
-exports.showEditForm = async (req, res) => {
+export const showEditForm = async (req: Request, res: Response): Promise<void> => {
     try {
         const volunteer = await Volunteer.findById(req.params.id);
-        if (!volunteer) return res.status(404).render('404');
+        if (!volunteer) { res.status(404).render('404'); return; }
         res.render('voluntarios/editar', { voluntario: volunteer });
     } catch (error) {
         console.error('Error fetching volunteer for edit:', error);
@@ -44,10 +45,11 @@ exports.showEditForm = async (req, res) => {
 };
 
 // UPDATE - Process update
-exports.update = async (req, res) => {
+export const update = async (req: Request, res: Response): Promise<void> => {
     try {
         const { nombre, apellido, cedula, telefono, profesion, disponibilidad } = req.body;
-        await Volunteer.findByIdAndUpdate(req.params.id,
+        await Volunteer.findByIdAndUpdate(
+            req.params.id,
             { nombre, apellido, cedula, telefono, profesion, disponibilidad },
             { new: true, runValidators: true }
         );
@@ -59,7 +61,7 @@ exports.update = async (req, res) => {
 };
 
 // DELETE - Remove volunteer
-exports.remove = async (req, res) => {
+export const remove = async (req: Request, res: Response): Promise<void> => {
     try {
         await Volunteer.findByIdAndDelete(req.params.id);
         res.redirect('/voluntarios');

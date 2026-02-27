@@ -27,3 +27,6 @@ npm-shrinkwrap.json
 .vscode
 Prompt.docx
 ARCHITECTURE.md
+dist
+node_modules
+Prompt.txt

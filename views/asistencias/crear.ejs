@@ -1,59 +1,110 @@
 <%- include('../partials/header') %>
 
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
-        <div class="card-header bg-info text-white">
-            <h4 class="mb-0"><i class="bi bi-clipboard2-plus-fill"></i> Registrar Nueva Asistencia</h4>
+    <div class="max-w-2xl mx-auto">
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <a href="/asistencias"
+                    class="text-amber-600 hover:text-amber-700 flex items-center gap-2 mb-2 text-sm font-medium w-fit transition-colors">
+                    <i class="ph ph-arrow-left"></i> Volver a Asistencias
+                </a>
+                <h1 class="text-3xl font-extrabold text-slate-900 border-b-4 border-amber-300 pb-2 inline-block">
+                    Registrar Asistencia
+                </h1>
+            </div>
         </div>
-        <div class="card-body">
-            <% if (typeof error !=='undefined' && error) { %>
-                <div class="alert alert-danger">
-                    <%= error %>
+
+        <div class="card p-8 border border-slate-100 shadow-card relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-bl-full -z-10"></div>
+
+            <% if (error) { %>
+                <div
+                    class="form-error bg-red-50 text-red-700 border-l-4 border-red-500 p-4 rounded-r-lg mb-6 shadow-sm">
+                    <div class="flex gap-2 isolate font-medium items-center">
+                        <i class="ph-fill ph-warning-circle text-xl text-red-500"></i>
+                        <%= error %>
+                    </div>
                 </div>
                 <% } %>
 
-                    <form action="/asistencias/crear" method="POST">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Beneficiario</label>
-                            <select name="beneficiario" class="form-select" required>
-                                <option value="" disabled selected>Selecciona un beneficiario</option>
-                                <% beneficiarios.forEach(b=> { %>
-                                    <option value="<%= b._id %>" <%=(typeof datos !=='undefined' &&
-                                        datos.beneficiario===String(b._id)) ? 'selected' : '' %>>
-                                        <%= b.apellido %>, <%= b.nombre %> — <%= b.cedula %>
-                                    </option>
-                                    <% }) %>
-                            </select>
+                    <form action="/asistencias/crear" method="POST" class="space-y-6">
+
+                        <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl space-y-5">
+                            <!-- Beneficiario Select -->
+                            <div>
+                                <label class="form-label font-bold text-slate-800" for="beneficiario">Seleccionar
+                                    Beneficiario <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <select id="beneficiario" name="beneficiario"
+                                        class="form-select border-slate-300 focus:ring-amber-500 focus:border-amber-500 bg-white shadow-sm pr-10"
+                                        required>
+                                        <option value="">-- Buscar persona en el sistema --</option>
+                                        <% beneficiarios.forEach(b=> { %>
+                                            <option value="<%= b._id %>" <%=datos.beneficiario==b._id ? 'selected' : ''
+                                                %>>
+                                                <%= b.apellido %>, <%= b.nombre %> (CI: <%= b.cedula %>)
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                                        <i class="ph-bold ph-caret-down"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actividad Select -->
+                            <div>
+                                <label class="form-label font-bold text-slate-800" for="actividad">Actividad Relacionada
+                                    <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <select id="actividad" name="actividad"
+                                        class="form-select border-slate-300 focus:ring-amber-500 focus:border-amber-500 bg-white shadow-sm pr-10"
+                                        required>
+                                        <option value="">-- Elegir evento o jornada --</option>
+                                        <% actividades.forEach(act=> { %>
+                                            <option value="<%= act._id %>" <%=datos.actividad==act._id ? 'selected' : ''
+                                                %>>
+                                                [<%= new Date(act.fecha).toLocaleDateString() %>] <%= act.nombre %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                                        <i class="ph-bold ph-caret-down"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Actividad</label>
-                            <select name="actividad" class="form-select" required>
-                                <option value="" disabled selected>Selecciona una actividad</option>
-                                <% actividades.forEach(a=> { %>
-                                    <option value="<%= a._id %>" <%=(typeof datos !=='undefined' &&
-                                        datos.actividad===String(a._id)) ? 'selected' : '' %>>
-                                        <%= a.nombre %> (<%= new Date(a.fecha).toLocaleDateString('es-VE') %>)
-                                    </option>
-                                    <% }) %>
-                            </select>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="md:col-span-2">
+                                <label class="form-label" for="fechaAsistencia">Fecha de Registro <span
+                                        class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <% const today=new Date().toISOString().split('T')[0]; %>
+                                        <input type="date" id="fechaAsistencia" name="fechaAsistencia"
+                                            class="form-input focus:ring-amber-500 w-full" required
+                                            value="<%= datos.fechaAsistencia ? new Date(datos.fechaAsistencia).toISOString().split('T')[0] : today %>">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Fecha de Asistencia</label>
-                            <input type="date" name="fechaAsistencia" class="form-control"
-                                value="<%= new Date().toISOString().split('T')[0] %>">
+                        <div>
+                            <label class="form-label" for="observacion">Observaciones Adicionales</label>
+                            <div class="relative">
+                                <textarea id="observacion" name="observacion" rows="3"
+                                    class="form-input resize-none focus:ring-amber-500 focus:border-amber-500 bg-slate-50 focus:bg-white transition-colors"
+                                    placeholder="Por ejemplo: Retiró insumos complementarios, asistió con acompañante..."><%= datos.observacion || '' %></textarea>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1.5"><i class="ph-fill ph-info"></i> Puedes dejar este
+                                campo vacío si no hay novedades.</p>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Observación (opcional)</label>
-                            <textarea name="observacion" class="form-control" rows="2"
-                                placeholder="Sin observaciones"><%= typeof datos !== 'undefined' ? datos.observacion : '' %></textarea>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="/asistencias" class="btn btn-secondary">Cancelar y Volver</a>
-                            <button type="submit" class="btn btn-info text-white"><i
-                                    class="bi bi-cloud-arrow-up-fill"></i> Guardar Asistencia</button>
+                        <div class="pt-6 border-t border-slate-100 flex justify-end gap-3 mt-8">
+                            <a href="/asistencias" class="btn btn-outline border-slate-300">Cancelar</a>
+                            <button type="submit" class="btn bg-amber-500 hover:bg-amber-600 text-white px-8 shadow-md">
+                                <i class="ph-bold ph-check"></i> Confirmar Asistencia
+                            </button>
                         </div>
                     </form>
         </div>

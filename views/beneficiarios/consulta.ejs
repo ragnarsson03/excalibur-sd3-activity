@@ -1,76 +1,105 @@
 <%- include('../partials/header') %>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-search text-primary"></i> Consulta de Beneficiarios</h2>
-        <a href="/beneficiarios" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
+    <div class="mb-10 text-center max-w-2xl mx-auto">
+        <h1 class="text-3xl font-extrabold text-slate-900 mb-3">Buscar Beneficiario</h1>
+        <p class="text-slate-500">Realiza una consulta rápida ingresando el nombre, apellido o número de cédula exacto o
+            parcial.</p>
     </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form action="/beneficiarios/consulta" method="GET" class="d-flex gap-2 align-items-end">
-                <div class="flex-grow-1">
-                    <label class="form-label fw-bold">Buscar por nombre, apellido o cédula</label>
-                    <input type="text" name="q" class="form-control" placeholder="Ej: Juan Pérez o V-12345678"
-                        value="<%= q %>">
-                </div>
-                <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Buscar</button>
-                <a href="/beneficiarios/consulta" class="btn btn-outline-secondary">Limpiar</a>
-            </form>
+    <!-- Search Bar -->
+    <div class="max-w-2xl mx-auto mb-10">
+        <form action="/beneficiarios/consulta" method="GET" class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i
+                    class="ph ph-magnifying-glass text-slate-400 text-xl group-focus-within:text-brand transition-colors"></i>
+            </div>
+            <input type="search" name="q" value="<%= q %>"
+                class="block w-full pl-12 pr-32 py-4 bg-white border border-slate-200 rounded-2xl leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-brand/20 focus:border-brand transition-all shadow-sm text-lg"
+                placeholder="Buscar por cédula o nombre..." autofocus>
+            <button type="submit"
+                class="absolute inset-y-2 right-2 btn btn-primary rounded-xl px-6 flex items-center shadow-md">
+                Buscar
+            </button>
+        </form>
+    </div>
+
+    <!-- Results -->
+    <% if (q) { %>
+        <div class="mb-4 flex justify-between items-center px-2">
+            <h2 class="text-lg font-semibold text-slate-800">
+                Resultados de: <span class="text-brand">"<%= q %>"</span>
+            </h2>
+            <span class="badge badge-purple px-3 py-1">
+                <%= beneficiarios.length %> encontrados
+            </span>
         </div>
-    </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <% if (beneficiarios.length===0) { %>
-                <div class="alert alert-warning text-center">
-                    No se encontraron beneficiarios con ese criterio de búsqueda.
-                </div>
-                <% } else { %>
-                    <p class="text-muted">Mostrando <strong>
-                            <%= beneficiarios.length %>
-                        </strong> resultado(s)
-                        <% if (q) { %> para: "<strong>
-                                <%= q %>
-                            </strong>"<% } %>
-                    </p>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Cédula</th>
-                                    <th>Nombre Completo</th>
-                                    <th>Teléfono</th>
-                                    <th>Dirección</th>
-                                    <th class="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% beneficiarios.forEach(b=> { %>
-                                    <tr>
-                                        <td><code><%= b.cedula %></code></td>
-                                        <td><strong>
-                                                <%= b.nombre %>
-                                                    <%= b.apellido %>
-                                            </strong></td>
-                                        <td>
-                                            <%= b.telefono %>
-                                        </td>
-                                        <td class="text-muted small">
-                                            <%= b.direccion %>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="/beneficiarios/editar/<%= b._id %>"
-                                                class="btn btn-sm btn-outline-warning">
-                                                <i class="bi bi-pencil-square"></i> Editar
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
-                            </tbody>
-                        </table>
+        <% if (beneficiarios.length> 0) { %>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <% beneficiarios.forEach(b=> { %>
+                    <div
+                        class="card p-6 border border-slate-100 shadow-soft hover:shadow-card transition-shadow flex flex-col h-full bg-white relative overflow-hidden group">
+                        <div
+                            class="absolute top-0 right-0 w-2 h-full bg-purple-400 scale-y-0 group-hover:scale-y-100 transition-transform origin-top">
+                        </div>
+
+                        <div class="flex items-start justify-between mb-4">
+                            <div
+                                class="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center font-bold text-xl border border-purple-100">
+                                <%= b.nombre.charAt(0) %>
+                                    <%= b.apellido.charAt(0) %>
+                            </div>
+                            <div class="badge badge-blue flex items-center gap-1">
+                                <i class="ph-fill ph-identification-card"></i>
+                                <%= b.cedula %>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow">
+                            <h3 class="text-xl font-bold text-slate-900 mb-1">
+                                <%= b.nombre %>
+                                    <%= b.apellido %>
+                            </h3>
+
+                            <div class="space-y-2 mt-4 text-sm text-slate-600">
+                                <p class="flex items-center gap-2"><i class="ph ph-calendar text-slate-400"></i>
+                                    <%= new Date(b.fechaNacimiento).toLocaleDateString() %>
+                                </p>
+                                <p class="flex items-center gap-2"><i class="ph ph-phone text-slate-400"></i>
+                                    <%= b.telefono %>
+                                </p>
+                                <p class="flex items-start gap-2"><i class="ph ph-map-pin text-slate-400 mt-0.5"></i>
+                                    <span class="line-clamp-2">
+                                        <%= b.direccion %>
+                                    </span></p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                            <a href="/beneficiarios/editar/<%= b._id %>"
+                                class="text-sm font-semibold text-brand hover:text-brand-dark flex items-center gap-1">
+                                Editar <i class="ph ph-arrow-right"></i>
+                            </a>
+                        </div>
                     </div>
-                    <% } %>
-        </div>
-    </div>
+                    <% }) %>
+            </div>
+            <% } else { %>
+                <div class="card p-12 text-center border border-dashed border-slate-300 shadow-none bg-slate-50/50">
+                    <div
+                        class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400 shadow-sm border border-slate-100">
+                        <i class="ph ph-magnifying-glass text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Sin resultados</h3>
+                    <p class="text-slate-500">No encontramos ningún beneficiario que coincida con tu búsqueda.</p>
+                </div>
+                <% } %>
+                    <% } else { %>
+                        <div class="card p-12 text-center border-0 shadow-none bg-transparent">
+                            <i class="ph-fill ph-users-three text-6xl text-slate-200 mb-4 inline-block"></i>
+                            <p class="text-slate-500 max-w-sm mx-auto">Ingresa un término de búsqueda arriba para
+                                encontrar beneficiarios en la base de datos.</p>
+                        </div>
+                        <% } %>
 
-    <%- include('../partials/footer') %>
+                            <%- include('../partials/footer') %>

@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "buildCommand": "npm run vercel-build",
+    "routes": [
+        {
+            "src": "/public/(.*)",
+            "dest": "/public/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "dist/server.js"
+        }
+    ]
+}
