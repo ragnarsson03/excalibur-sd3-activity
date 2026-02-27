@@ -100,10 +100,12 @@ export const searchByCedula = async (req: Request, res: Response): Promise<void>
             res.redirect('/beneficiarios');
             return;
         }
-        const beneficiary = await Beneficiary.findOne({ cedula: req.query.cedula as string });
+        const queryStr = (cedula as string).trim();
+        // Permite la búsqueda parcial de números de cédula
+        const beneficiaries = await Beneficiary.find({ cedula: { $regex: queryStr, $options: 'i' } });
         res.render('beneficiarios/index', {
-            beneficiarios: beneficiary ? [beneficiary] : [],
-            searchQuery: cedula
+            beneficiarios: beneficiaries,
+            searchQuery: queryStr
         });
     } catch (error) {
         console.error('Error fetching beneficiary by cedula:', error);

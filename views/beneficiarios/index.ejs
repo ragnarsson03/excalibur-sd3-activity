@@ -24,8 +24,8 @@
             <h3 class="text-sm font-bold text-slate-700 hidden md:block whitespace-nowrap"><i
                     class="ph ph-magnifying-glass"></i> Búsqueda Rápida</h3>
             <div class="flex">
-                <input type="text" name="cedula" placeholder="Ingrese Cédula"
-                    class="form-input rounded-r-none w-full md:w-64" required
+                <input type="number" name="cedula" placeholder="Ingrese Cédula (sólo números)"
+                    class="form-input rounded-r-none w-full md:w-64" required title="Debe ingresar solo números"
                     value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
                 <button type="submit" class="btn btn-primary rounded-l-none">Buscar</button>
             </div>

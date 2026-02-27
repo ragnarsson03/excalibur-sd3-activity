@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "dev": "concurrently \"npx tailwindcss -i ./public/css/tailwind.src.css -o ./public/css/tailwind.css --watch\" \"nodemon --exec ts-node src/server.ts\"",
+    "dev": "concurrently \"npx tailwindcss -i ./public/css/tailwind.src.css -o ./public/css/tailwind.css --watch\" \"nodemon --ext ts,js,json --exec ts-node src/server.ts\"",
     "build": "npx tailwindcss -i ./public/css/tailwind.src.css -o ./public/css/tailwind.css --minify && tsc",
     "vercel-build": "npm run build"
   },
