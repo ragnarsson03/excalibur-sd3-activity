@@ -22,4 +22,7 @@ router.post('/eliminar/:id', ctrl.remove);
 // QUERY  - Custom search
 router.get('/consulta', ctrl.search);
 
+// QUERY - Simple search by cedula
+router.get('/buscar', ctrl.searchByCedula);
+
 export default router;

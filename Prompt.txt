@@ -1,250 +1,37 @@
-# 📐 Arquitectura de Software Integral
-## Sistema de Gestión — Fundación 100% San Agustín
-### Node.js + Express + MongoDB | Patrón MVC
+Actúa como un Arquitecto de Software Senior. Tengo una estructura funcional en Node.js/Express (JavaScript) y necesito migrarla a TypeScript y Tailwind CSS siguiendo el patrón MVC integral que te presento a continuación.
 
----
+OBJETIVO: Transformar el proyecto excalibur-sd3-activity para que cumpla con los requisitos académicos de la UNETI (5 colecciones, CRUD, TS, Tailwind).
 
-## 1. Estructura de Directorios (Actual → Profesional)
+TAREAS TÉCNICAS REQUERIDAS:
 
-```
-excalibur-sd3-activity/
-│
-├── config/                         # ⚙️  Configuración centralizada
-│   └── database.js                 # Conexión a MongoDB con validación
-│
-├── controllers/                    # 🎮 Capa de Control (MVC)
-│   ├── beneficiary.controller.js   # CRUD + búsqueda
-│   ├── activity.controller.js      # CRUD + filtro por área
-│   ├── volunteer.controller.js     # CRUD
-│   ├── resource.controller.js      # CRUD
-│   └── attendance.controller.js    # CRUD + populate (joins)
-│
-├── models/                         # 🗄️  Capa de Modelo (MVC) — Schemas Mongoose
-│   ├── Beneficiary.js
-│   ├── Activity.js
-│   ├── Volunteer.js
-│   ├── Resource.js
-│   └── Attendance.js
-│
-├── routes/                         # 🛣️  Enrutamiento
-│   ├── beneficiary.routes.js
-│   ├── activity.routes.js
-│   ├── volunteer.routes.js
-│   ├── resource.routes.js
-│   └── attendance.routes.js
-│
-├── views/                          # 🖼️  Capa de Vista (MVC) — Templates EJS
-│   ├── partials/
-│   │   ├── header.ejs
-│   │   └── footer.ejs
-│   ├── beneficiarios/
-│   ├── actividades/
-│   ├── voluntarios/
-│   ├── recursos/
-│   ├── asistencias/
-│   ├── index.ejs
-│   └── 404.ejs
-│
-├── public/                         # 📦 Assets estáticos (CSS, JS, imágenes)
-│   └── css/style.css
-│
-├── .env                            # 🔒 Variables de entorno (NO subir a GitHub)
-├── .env.example                    # 📄 Plantilla pública del .env
-├── .gitignore                      # 🚫 Archivos excluidos de Git
-├── package.json
-├── README.md
-└── server.js                       # 🚀 Punto de entrada de la aplicación
-```
+Setup de TypeScript: >    - Genera los comandos para instalar: typescript, ts-node, nodemon, y los types @types/node, @types/express, @types/mongoose, @types/ejs.
 
----
+Crea un archivo tsconfig.json optimizado para Node.js.
 
-## 2. Patrón MVC — Flujo de una Petición
+Renombra server.js a server.ts y configura los scripts en package.json para compilar y ejecutar con ts-node-dev.
 
-```
-Cliente (Browser)
-       │
-       │  HTTP Request (GET /beneficiarios)
-       ↓
-   server.js  ──→  routes/beneficiary.routes.js
-                              │
-                              │  Llama al método del controlador
-                              ↓
-                  controllers/beneficiary.controller.js
-                              │
-                  ┌───────────┴────────────┐
-                  │                        │
-                  ↓                        ↓
-           models/Beneficiary.js     (lógica de negocio)
-           (Mongoose → MongoDB)
-                  │
-                  ↓
-           Datos obtenidos de la BD
-                  │
-                  ↓
-           res.render('beneficiarios/index', { datos })
-                  │
-                  ↓
-           views/beneficiarios/index.ejs
-                  │
-                  ↓
-           HTML renderizado → Cliente
-```
+Capa de Modelos (Interfaces TS):
 
----
+Crea una carpeta src/interfaces/. Define interfaces para las 5 entidades: IBeneficiary, IActivity, IVolunteer, IResource, IAttendance.
 
-## 3. Convenciones de Nombres (Estándar de la Industria)
+Refactoriza los archivos en models/ a .ts, usando estas interfaces en los Schemas de Mongoose para asegurar el tipado fuerte.
 
-| Capa        | Convención          | Ejemplo                        |
-|-------------|---------------------|--------------------------------|
-| Models      | `PascalCase.js`     | `Beneficiary.js`               |
-| Controllers | `entity.controller.js` | `beneficiary.controller.js` |
-| Routes      | `entity.routes.js`  | `beneficiary.routes.js`        |
-| Config      | `descripcion.js`    | `database.js`                  |
-| Views       | `accion.ejs`        | `crear.ejs`, `editar.ejs`      |
-| CSS/JS      | `kebab-case`        | `main-style.css`               |
+Capa de Controladores (Typed Express):
 
-### Métodos de Controladores (RESTful naming)
-| Acción       | Método recomendado     |
-|--------------|------------------------|
-| Listar todos | `getAll`               |
-| Ver uno      | `getById`              |
-| Mostrar form crear | `showCreateForm` |
-| Crear        | `create`               |
-| Mostrar form editar | `showEditForm` |
-| Actualizar   | `update`               |
-| Eliminar     | `remove`               |
-| Buscar/filtrar | `search`             |
+Refactoriza los controladores a .ts. Importa y aplica los tipos Request y Response de Express.
 
----
+Asegura que la lógica de búsqueda por Cédula/ID esté tipada correctamente.
 
-## 4. Capas de la Arquitectura — Responsabilidades
+Capa de Vista (Tailwind CSS):
 
-### 🗄️ Model (Mongoose Schema)
-- **Responsabilidad**: Definir la estructura de datos + validaciones
-- **NO debe**: Contener lógica de negocio ni código HTTP
-```js
-// ✅ Correcto: validaciones declarativas
-cedula: { type: String, required: true, unique: true, trim: true }
+Configura Tailwind CSS. Dame el contenido de tailwind.config.js.
 
-// ❌ Incorrecto en el modelo: lógica de negocio
-exports.buscarPorCedula = async (cedula) => { ... }  // Esto va en el controller
-```
+En views/partials/header.ejs, integra Tailwind mediante su CDN para asegurar que el diseño funcione de inmediato.
 
-### 🎮 Controller
-- **Responsabilidad**: Recibir la petición HTTP, interactuar con el Model, enviar la respuesta
-- **NO debe**: Tener lógica de BD compleja (va en el Model) ni HTML (va en la Vista)
-```js
-// ✅ Patrón correcto: try/catch en cada método
-exports.getAll = async (req, res) => {
-    try {
-        const items = await Model.find();
-        res.render('vista/index', { items });
-    } catch (error) {
-        console.error(error);
-        res.status(500).render('500', { message: error.message });
-    }
-};
-```
+Rediseño: Dame un componente de 'Card' y una 'Tabla' usando clases de Tailwind (ej: rounded-xl, shadow-lg, hover:bg-blue-50, font-semibold) para que la lista de beneficiarios se vea profesional.
 
-### 🛣️ Routes
-- **Responsabilidad**: Mapear URLs a métodos del controlador
-- **NO debe**: Contener lógica, solo importar y delegar
-```js
-// ✅ Correcto: solo delega al controlador
-router.get('/', ctrl.getAll);
-router.post('/crear', ctrl.create);
-```
+Despliegue Vercel:
 
-### ⚙️ Config
-- **Responsabilidad**: Configuración de servicios externos (BD, mail, etc.)
-- **Validar** variables de entorno aquí, NO en server.js
+Ajusta el vercel.json para que compile TypeScript antes de desplegar.
 
-### 🖼️ Views (EJS)
-- **Responsabilidad**: Presentar datos al usuario
-- **NO debe**: Contener lógica de negocio compleja
-
----
-
-## 5. Variables de Entorno — Regla de Oro
-
-```
-┌─────────────────────────────────────────────────────┐
-│   .env (real, privado)     .env.example (público)   │
-│   ✅ En .gitignore          ✅ Subido a GitHub       │
-│   Contiene valores reales   Contiene plantilla       │
-└─────────────────────────────────────────────────────┘
-```
-
-**El nombre de la variable DEBE ser idéntico en los 3 lugares:**
-1. `.env` → `MONGODB_URI=mongodb+srv://...`
-2. `config/database.js` → `process.env.MONGODB_URI`
-3. `.env.example` → `MONGODB_URI=<tu_uri_aqui>`
-
----
-
-## 6. Mejoras Recomendadas (Próximos pasos)
-
-### 🔴 Prioritarias (para calidad académica)
-1. **Agregar página de error 500** — Vista `views/500.ejs`
-2. **Datos de prueba (seed)** — Script `scripts/seed.js` para poblar la BD
-3. **Capturas MongoDB Atlas** — Para el documento PDF de entrega
-
-### 🟡 Intermedias (buenas prácticas)
-4. **Validación en el lado servidor** — Verificar datos antes de guardar
-   ```js
-   // En el controller, antes del .create():
-   if (!nombre || !cedula) return res.render('crear', { error: 'Campos requeridos' });
-   ```
-5. **Mensajes Flash** — Instalar `connect-flash` para mensajes de éxito/error
-   ```bash
-   npm install connect-flash express-session
-   ```
-6. **Paginación** — Para listas largas: `Beneficiary.find().limit(10).skip(page * 10)`
-
-### 🟢 Avanzadas (production-ready)
-7. **Helmet.js** — Seguridad HTTP headers: `npm install helmet`
-8. **Morgan** — Logger HTTP: `npm install morgan`
-9. **Nodemon** — Reinicio automático en desarrollo: `npm install -D nodemon`
-   ```json
-   // package.json
-   "scripts": {
-     "dev": "nodemon server.js",
-     "start": "node server.js"
-   }
-   ```
-
----
-
-## 7. Checklist Final para la Entrega
-
-- [ ] ✅ 5 colecciones en MongoDB (verificar en Atlas/Compass)
-- [ ] ✅ CRUD completo en los 5 módulos
-- [ ] ✅ Consulta personalizada implementada
-- [ ] ✅ Conexión a MongoDB funcional
-- [ ] ✅ `npm install` + `npm start` documentado en README
-- [ ] ⏳ Capturas de pantalla de las colecciones en MongoDB Atlas
-- [ ] ⏳ Captura de la conexión exitosa
-- [ ] ⏳ PDF documentado con nombre y apellido
-- [ ] ⏳ Repositorio GitHub actualizado con `git push`
-
----
-
-## 8. Comandos de Mantenimiento Git
-
-```bash
-# Ver archivos modificados
-git status
-
-# Agregar todos los cambios
-git add .
-
-# Confirmar con mensaje descriptivo
-git commit -m "feat: complete MVC architecture with 5 modules"
-
-# Subir a GitHub
-git push origin main
-```
-
-> 📌 **Nota**: La variable `MONGODB_URI` en `.env` es el único punto de configuración
-> de la BD. Si el URI cambia (p. ej. en Vercel), solo actualiza esa variable, 
-> sin tocar el código fuente.
+ESTRUCTURA DE SALIDA: Mantén la jerarquía de carpetas del Grupo EXCALIBUR pero bajo una carpeta src/ (estándar TS)

@@ -91,3 +91,22 @@ export const search = async (req: Request, res: Response): Promise<void> => {
         res.status(500).render('500', { message: 'Error in search' });
     }
 };
+
+// QUERY - Search by Cedula
+export const searchByCedula = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { cedula } = req.query;
+        if (!cedula) {
+            res.redirect('/beneficiarios');
+            return;
+        }
+        const beneficiary = await Beneficiary.findOne({ cedula: req.query.cedula as string });
+        res.render('beneficiarios/index', {
+            beneficiarios: beneficiary ? [beneficiary] : [],
+            searchQuery: cedula
+        });
+    } catch (error) {
+        console.error('Error fetching beneficiary by cedula:', error);
+        res.status(500).render('500', { message: 'Error loading beneficiaries' });
+    }
+};
