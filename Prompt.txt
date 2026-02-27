@@ -1,37 +1,12 @@
-Actúa como un Arquitecto de Software Senior. Tengo una estructura funcional en Node.js/Express (JavaScript) y necesito migrarla a TypeScript y Tailwind CSS siguiendo el patrón MVC integral que te presento a continuación.
+Hay un error en cédula "404
+Página no encontrada
+Lo sentimos, la página que estás buscando no existe, ha sido movida o está temporalmente inactiva.
 
-OBJETIVO: Transformar el proyecto excalibur-sd3-activity para que cumpla con los requisitos académicos de la UNETI (5 colecciones, CRUD, TS, Tailwind).
+Volver al Inicio" 
 
-TAREAS TÉCNICAS REQUERIDAS:
+"buscar?cedula=Mar%C3%ADa:1  Failed to load resource: the server responded with a status of 404 (Not Found)"
 
-Setup de TypeScript: >    - Genera los comandos para instalar: typescript, ts-node, nodemon, y los types @types/node, @types/express, @types/mongoose, @types/ejs.
+Debe de buscar por número y no lo hace
 
-Crea un archivo tsconfig.json optimizado para Node.js.
+Mejora la búsqueda de cédulas 
 
-Renombra server.js a server.ts y configura los scripts en package.json para compilar y ejecutar con ts-node-dev.
-
-Capa de Modelos (Interfaces TS):
-
-Crea una carpeta src/interfaces/. Define interfaces para las 5 entidades: IBeneficiary, IActivity, IVolunteer, IResource, IAttendance.
-
-Refactoriza los archivos en models/ a .ts, usando estas interfaces en los Schemas de Mongoose para asegurar el tipado fuerte.
-
-Capa de Controladores (Typed Express):
-
-Refactoriza los controladores a .ts. Importa y aplica los tipos Request y Response de Express.
-
-Asegura que la lógica de búsqueda por Cédula/ID esté tipada correctamente.
-
-Capa de Vista (Tailwind CSS):
-
-Configura Tailwind CSS. Dame el contenido de tailwind.config.js.
-
-En views/partials/header.ejs, integra Tailwind mediante su CDN para asegurar que el diseño funcione de inmediato.
-
-Rediseño: Dame un componente de 'Card' y una 'Tabla' usando clases de Tailwind (ej: rounded-xl, shadow-lg, hover:bg-blue-50, font-semibold) para que la lista de beneficiarios se vea profesional.
-
-Despliegue Vercel:
-
-Ajusta el vercel.json para que compile TypeScript antes de desplegar.
-
-ESTRUCTURA DE SALIDA: Mantén la jerarquía de carpetas del Grupo EXCALIBUR pero bajo una carpeta src/ (estándar TS)
