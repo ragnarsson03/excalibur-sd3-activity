@@ -1,19 +1,19 @@
-# Sistema de Gestión — Fundación 100% San Agustín
+﻿# Sistema de Gestión — Fundación 100% San Agustín
 
-Aplicación web desarrollada con Node.js, Express y MongoDB para la gestión de beneficiarios y actividades de la fundación.
+Aplicación web profesional desarrollada con **Node.js, TypeScript y MongoDB** para la gestión integral de la fundación.
 
 ## 📋 Características
 
-- **Arquitectura MVC**: Modelo-Vista-Controlador para una mejor organización del código.
-- **CRUD Completo**: Funcionalidades para crear, leer, actualizar y eliminar registros.
+- **Arquitectura MVC Pro**: Organización estricta bajo el patrón Modelo-Vista-Controlador.
+- **Tipado Fuerte**: Implementación de **TypeScript** e Interfaces para integridad de datos.
+- **Diseño Moderno**: Interfaz construida con **Tailwind CSS**, enfocada en la experiencia de usuario.
 - **5 Colecciones en MongoDB**:
-  - `beneficiaries` — Personas que reciben servicios
-  - `activities` — Programas y eventos
-  - `volunteers` — Personal de apoyo
-  - `resources` — Inventario de materiales
-  - `attendances` — Registro de participación
-- **Diseño Responsivo**: Interfaz adaptada a diferentes dispositivos con Bootstrap 5.
-- **Deploy en Vercel**: Configurado para entornos serverless.
+  - `beneficiaries` — Gestión de personas (Incluye búsqueda por Cédula).
+  - `activities` — Programas y eventos.
+  - `volunteers` — Personal de apoyo.
+  - `resources` — Inventario de materiales.
+  - `attendances` — Registro de participación.
+- **Deploy Cloud**: Optimizado para **Vercel** con soporte para funciones serverless.
 
 ---
 
@@ -31,91 +31,55 @@ npm install
 ```
 
 ### 3. Configurar variables de entorno
-Crea un archivo `.env` en la raíz del proyecto copiando `.env.example`:
-```bash
-copy .env.example .env
-```
-Edita `.env` con tu URI de MongoDB Atlas:
+Crea un archivo `.env` en la raíz del proyecto:
 ```env
-MONGODB_URI=mongodb+srv://<usuario>:<password>@cluster.mongodb.net/<dbname>?retryWrites=true&w=majority
+MONGODB_URI=tu_uri_de_mongodb_atlas
 PORT=3000
 ```
 
-### 4. Ejecutar la aplicación
+### 4. Ejecutar en modo desarrollo
 ```bash
-npm start
+npm run dev
 ```
-
-La aplicación estará disponible en `http://localhost:3000`.
-
----
-
-## ☁️ Despliegue en Vercel
-
-### Requisitos previos
-- Cuenta en [vercel.com](https://vercel.com)
-- Repositorio en GitHub conectado a Vercel
-
-### Pasos
-
-1. **Importar proyecto** en Vercel desde GitHub
-2. **Configurar variable de entorno** en Vercel:
-   - Ve a: `Project → Settings → Environment Variables`
-   - Agrega: `MONGODB_URI` con el valor de tu URI de MongoDB Atlas
-3. **Desplegar**: Vercel detecta automáticamente el `vercel.json` y despliega
-
-> ⚠️ **Importante**: Si `MONGODB_URI` no está configurada en Vercel, la aplicación dará error. Las variables del `.env` local **no se suben a Vercel**.
+La aplicación compilará el código TypeScript y estará disponible en http://localhost:3000.
 
 ---
 
-## 🌐 Rutas Disponibles
-
-| Módulo | Ruta base | CRUD |
-|---|---|---|
-| Beneficiarios | `/beneficiarios` | ✅ + Consulta |
-| Actividades | `/actividades` | ✅ + Filtro por área |
-| Voluntarios | `/voluntarios` | ✅ |
-| Recursos | `/recursos` | ✅ |
-| Asistencias | `/asistencias` | ✅ |
-
----
-
-## 🛠️ Tecnologías
-
-| Tecnología | Versión | Uso |
-|---|---|---|
-| Node.js | ≥18 | Entorno de ejecución |
-| Express | ^5.x | Framework web |
-| MongoDB | Atlas | Base de datos NoSQL |
-| Mongoose | ^9.x | ODM para MongoDB |
-| EJS | ^4.x | Motor de plantillas |
-| Bootstrap | 5.3.3 | UI / Diseño responsivo |
-| Vercel | — | Plataforma de despliegue |
-
----
-
-## 📁 Estructura del Proyecto
-
-```
+## 📁 Estructura del Proyecto (src/)
+```plaintext
 excalibur-sd3-activity/
-├── config/
-│   └── database.js          # Conexión a MongoDB (con caché serverless)
-├── controllers/             # Lógica de negocio (CRUD)
-├── models/                  # Schemas de Mongoose
-├── routes/                  # Definición de rutas
-├── views/                   # Plantillas EJS
-├── public/                  # Assets estáticos
-├── .env.example             # Plantilla de variables de entorno
-├── vercel.json              # Configuración de despliegue serverless
-└── server.js                # Punto de entrada
+├── src/
+│   ├── config/      # Conexión a MongoDB (Singleton)
+│   ├── controllers/ # Lógica de negocio y búsqueda por cédula
+│   ├── interfaces/  # Interfaces de TypeScript
+│   ├── models/      # Schemas de Mongoose tipados
+│   ├── routes/      # Enrutamiento de la API
+│   └── server.ts    # Punto de entrada TS
+├── views/           # Plantillas EJS + Tailwind CSS
+├── public/          # Assets estáticos
+├── tsconfig.json    # Configuración de TypeScript
+└── vercel.json      # Configuración de despliegue
 ```
+
+---
+
+## 🛠️ Stack Tecnológico
+| Tecnología | Uso |
+| :--- | :--- |
+| **TypeScript** | Lenguaje principal (Tipado estático) |
+| **Node.js / Express** | Backend y Servidor |
+| **MongoDB Atlas** | Base de datos NoSQL Cloud |
+| **Tailwind CSS** | Framework de diseño UI |
+| **EJS** | Motor de plantillas dinámicas |
 
 ---
 
 ## 👥 Autores
 
-- Eliezer González — Grupo SD3
+- Frederick Durán — Grupo SD3
+- Yesmir Guzmán - Grupo SD3
+- Juan Henríquez - Grupo SD3
 
 ## 📄 Licencia
 
-Proyecto académico — Universidad Nacional Experimental de las Telecomunicaciones (UNET)
+Este proyecto es para fines académicos de la asignatura Desarrollo Web - Universidad Nacional Experimental de las Telecomunicaciones (UNET).
