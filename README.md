@@ -2,6 +2,8 @@
 
 Aplicación web profesional desarrollada con **Node.js, TypeScript y MongoDB** para la gestión integral de la fundación.
 
+🚀 **Demo en vivo:** [https://excalibur-sd3-activity.vercel.app/](https://excalibur-sd3-activity.vercel.app/)
+
 ## 📋 Características
 
 - **Arquitectura MVC Pro**: Organización estricta bajo el patrón Modelo-Vista-Controlador.
@@ -14,6 +16,16 @@ Aplicación web profesional desarrollada con **Node.js, TypeScript y MongoDB** p
   - `resources` — Inventario de materiales.
   - `attendances` — Registro de participación.
 - **Deploy Cloud**: Optimizado para **Vercel** con soporte para funciones serverless.
+
+---
+
+## 📸 Vistas del Proyecto
+
+![Módulo de Beneficiarios](./public/beneficiaries.png)
+*Listado y búsqueda rápida de beneficiarios.*
+
+![Interfaz Principal](./public/image.png)
+*Vista de bienvenida del ecosistema.*
 
 ---
 
